@@ -57,102 +57,102 @@ async function seed() {
 
 
     const DefaultsuperAdminPermissions = [
-  // Core Features – Dashboard, Campaigns, Templates, Contacts, ChatHub
-  'dashboard:view',
+      // Core Features – Dashboard, Campaigns, Templates, Contacts, ChatHub
+      'dashboard:view',
 
-  'campaigns:view',
-  'campaigns:create',
-  'campaigns:edit',
-  'campaigns:delete',
-  'campaigns:export',
+      'campaigns:view',
+      'campaigns:create',
+      'campaigns:edit',
+      'campaigns:delete',
+      'campaigns:export',
 
-  'templates:view',
-  'templates:create',
-  'templates:edit',
-  'templates:delete',
-  'templates:export',
+      'templates:view',
+      'templates:create',
+      'templates:edit',
+      'templates:delete',
+      'templates:export',
 
-  'contacts:view',
-  'contacts:create',
-  'contacts:edit',
-  'contacts:delete',
-  'contacts:export',
+      'contacts:view',
+      'contacts:create',
+      'contacts:edit',
+      'contacts:delete',
+      'contacts:export',
 
-  'chathub:view',
-  'chathub:send',
-  'chathub:assign',
-  'chathub:delete',
+      'chathub:view',
+      'chathub:send',
+      'chathub:assign',
+      'chathub:delete',
 
-  // Automation & AI – Bot Flow Builder, Workflows, AI Assistant, Auto Responses
-  'botflow:view',
-  'botflow:create',
-  'botflow:edit',
-  'botflow:delete',
+      // Automation & AI – Bot Flow Builder, Workflows, AI Assistant, Auto Responses
+      'botflow:view',
+      'botflow:create',
+      'botflow:edit',
+      'botflow:delete',
 
-  'workflows:view',
-  'workflows:create',
-  'workflows:edit',
-  'workflows:delete',
+      'workflows:view',
+      'workflows:create',
+      'workflows:edit',
+      'workflows:delete',
 
-  'aiassistant:use',
-  'aiassistant:configure',
+      'aiassistant:use',
+      'aiassistant:configure',
 
-  'autoresponses:view',
-  'autoresponses:create',
-  'autoresponses:edit',
-  'autoresponses:delete',
+      'autoresponses:view',
+      'autoresponses:create',
+      'autoresponses:edit',
+      'autoresponses:delete',
 
-  // WhatsApp Management – WABA Connection, Multi-Number, Webhooks, QR Codes
-  'waba:view',
-  'waba:connect',
-  'waba:disconnect',
-  'multi_number:view',
-  'multi_number:add',
-  'multi_number:edit',
-  'multi_number:delete',
-  'webhooks:view',
-  'webhooks:create',
-  'webhooks:edit',
-  'webhooks:delete',
-  'qrcodes:view',
-  'qrcodes:generate',
-  'qrcodes:delete',
+      // WhatsApp Management – WABA Connection, Multi-Number, Webhooks, QR Codes
+      'waba:view',
+      'waba:connect',
+      'waba:disconnect',
+      'multi_number:view',
+      'multi_number:add',
+      'multi_number:edit',
+      'multi_number:delete',
+      'webhooks:view',
+      'webhooks:create',
+      'webhooks:edit',
+      'webhooks:delete',
+      'qrcodes:view',
+      'qrcodes:generate',
+      'qrcodes:delete',
 
-  // CRM & Leads – CRM Systems, Lead Management, Bulk Import, Segmentation
-  'crm:view',
-  'leads:view',
-  'leads:create',
-  'leads:edit',
-  'leads:delete',
-  'bulk_import:leads',
-  'segmentation:view',
-  'segmentation:create',
-  'segmentation:edit',
-  'segmentation:delete',
+      // CRM & Leads – CRM Systems, Lead Management, Bulk Import, Segmentation
+      'crm:view',
+      'leads:view',
+      'leads:create',
+      'leads:edit',
+      'leads:delete',
+      'bulk_import:leads',
+      'segmentation:view',
+      'segmentation:create',
+      'segmentation:edit',
+      'segmentation:delete',
 
-  // Analytics & Reports – Analytics, Message Logs, Health Monitor, Reports
-  'analytics:view',
-  'message_logs:view',
-  'health_monitor:view',
-  'reports:view',
-  'reports:export',
+      // Analytics & Reports – Analytics, Message Logs, Health Monitor, Reports
+      'analytics:view',
+      'message_logs:view',
+      'health_monitor:view',
+      'reports:view',
+      'reports:export',
 
-  // Team & Support – Team Members, Support Tickets, Settings, Notifications
-  'team:view',
-  'team:create',
-  'team:edit',
-  'team:delete',
-  'support_tickets:view',
-  'support_tickets:create',
-  'support_tickets:edit',
-  'support_tickets:close',
-  'notifications:view',
-  'notifications:send',
+      // Team & Support – Team Members, Support Tickets, Settings, Notifications
+      'team:view',
+      'team:create',
+      'team:edit',
+      'team:delete',
+      'support_tickets:view',
+      'support_tickets:create',
+      'support_tickets:edit',
+      'support_tickets:close',
+      'notifications:view',
+      'notifications:send',
 
-  // Settings (global)
-  'settings:view',
-  'settings:edit'
-];
+      // Settings (global)
+      'settings:view',
+      'settings:edit'
+    ];
 
 
     // Default permissions 
@@ -217,13 +217,25 @@ async function seed() {
     });
 
 
-     const demoAdmin = await createUserIfNotExists({
+    const demoAdmin = await createUserIfNotExists({
       username: "demoadmin",
       password: "Admin@123",
       email: "demoadmin@whatsway.com",
       firstName: "Demo",
       lastName: "Admin",
-      role: "superadmin",
+      role: "admin", // Changed from superadmin to admin
+      status: "active",
+      permissions: defaultPermissions,
+      isEmailVerified: true,
+    });
+
+    const waqasAdmin = await createUserIfNotExists({
+      username: "waqas_admin",
+      password: "Admin@123",
+      email: "waqas@whatsway.com",
+      firstName: "Waqas",
+      lastName: "Admin",
+      role: "admin",
       status: "active",
       permissions: defaultPermissions,
       isEmailVerified: true,
@@ -246,7 +258,7 @@ async function seed() {
     console.log("Demo Admin:");
     console.log("  Username: demoadmin");
     console.log("  Password: Admin@123");
-    
+
     console.log("Demo User:");
     console.log("  Username: demouser");
     console.log("  Password: Demo@12345");
