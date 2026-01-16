@@ -6,16 +6,16 @@ export function registerWebhookRoutes(app: Express) {
   app.get("/api/webhook-configs-channel-id/:id", webhooksController.getWebhookConfigsByChannelId);
 
   app.get("/api/webhook-configs", webhooksController.getWebhookConfigs);
-  
+
   // Create webhook config
   app.post("/api/webhook-configs", webhooksController.createWebhookConfig);
-  
+
   // Update webhook config
   app.patch("/api/webhook-configs/:id", webhooksController.updateWebhookConfig);
-  
+
   // Delete webhook config
   app.delete("/api/webhook-configs/:id", webhooksController.deleteWebhookConfig);
-  
+
   // Test webhook
   app.post("/api/webhook-configs/:id/test", webhooksController.testWebhook);
 
@@ -24,6 +24,7 @@ export function registerWebhookRoutes(app: Express) {
 
   // Global webhook endpoint
   app.all("/webhook/:id", webhooksController.handleWebhook);
+  app.all("/webhook", webhooksController.handleWebhook);
 
   // ==================== PAYMENT WEBHOOKS ====================
 

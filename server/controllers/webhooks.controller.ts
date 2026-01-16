@@ -43,7 +43,7 @@ export const getGlobalWebhookUrl = asyncHandler(
 
 export const createWebhookConfig = asyncHandler(
   async (req: Request, res: Response) => {
-    const { verifyToken, appSecret, events , channelId } = req.body;
+    const { verifyToken, appSecret, events, channelId } = req.body;
 
     if (!verifyToken) {
       throw new AppError(400, "Verify token is required");
@@ -165,17 +165,24 @@ export const handleWebhook = asyncHandler(
       // Get webhook config from database to check verify token
       const configs = await storage.getWebhookConfigs();
       const activeConfig = configs.find((c) => c.isActive);
+      const envVerifyToken = process.env.WHATSAPP_WEBHOOK_VERIFY_TOKEN;
 
-      if (
-        mode === "subscribe" &&
-        activeConfig &&
-        verifyToken === activeConfig.verifyToken
-      ) {
+      const isVerified =
+        (mode === "subscribe" &&
+          activeConfig &&
+          verifyToken === activeConfig.verifyToken) ||
+        (mode === "subscribe" &&
+          envVerifyToken &&
+          verifyToken === envVerifyToken);
+
+      if (isVerified) {
         console.log("Webhook verified");
-        // Update last ping timestamp
-        await storage.updateWebhookConfig(activeConfig.id, {
-          lastPingAt: new Date(),
-        });
+        // Update last ping timestamp if config exists
+        if (activeConfig) {
+          await storage.updateWebhookConfig(activeConfig.id, {
+            lastPingAt: new Date(),
+          });
+        }
         return res.send(challenge);
       }
       throw new AppError(403, "Verification failed");
@@ -722,12 +729,12 @@ async function checkAndSendAiReply(
 ): Promise<boolean> {
   // Get active AI settings
   const getAiSettings = await db
-  .select()
-  .from(aiSettings)
-  .where(eq(aiSettings.channelId, conversation.channelId))
-  .limit(1)
-  .then((res) => res[0]);
-  
+    .select()
+    .from(aiSettings)
+    .where(eq(aiSettings.channelId, conversation.channelId))
+    .limit(1)
+    .then((res) => res[0]);
+
   if (!getAiSettings || !getAiSettings.isActive) {
     return false;
   }
@@ -1108,8 +1115,7 @@ async function handleTemplateStatusUpdate(value: any) {
   const { message_template_id, message_template_name, event, reason } = value;
 
   console.log(
-    `Template status update: ${message_template_name} - ${event}${
-      reason ? ` - Reason: ${reason}` : ""
+    `Template status update: ${message_template_name} - ${event}${reason ? ` - Reason: ${reason}` : ""
     }`
   );
 
@@ -1136,8 +1142,7 @@ async function handleTemplateStatusUpdate(value: any) {
       }
       await storage.updateTemplate(template.id, updateData);
       console.log(
-        `Updated template ${template.name} status to ${status}${
-          reason ? ` with reason: ${reason}` : ""
+        `Updated template ${template.name} status to ${status}${reason ? ` with reason: ${reason}` : ""
         }`
       );
     }
@@ -1237,7 +1242,7 @@ export const razorpayWebhook = async (req: Request, res: Response) => {
   try {
     const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET || '';
     const signature = req.headers['x-razorpay-signature'] as string;
-    
+
     // Verify webhook signature
     const expectedSignature = crypto
       .createHmac('sha256', webhookSecret)
@@ -1245,9 +1250,9 @@ export const razorpayWebhook = async (req: Request, res: Response) => {
       .digest('hex');
 
     if (signature !== expectedSignature) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Invalid webhook signature' 
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid webhook signature'
       });
     }
 
@@ -1260,19 +1265,19 @@ export const razorpayWebhook = async (req: Request, res: Response) => {
       case 'payment.authorized':
         await handleRazorpayPaymentAuthorized(event);
         break;
-      
+
       case 'payment.captured':
         await handleRazorpayPaymentCaptured(event);
         break;
-      
+
       case 'payment.failed':
         await handleRazorpayPaymentFailed(event);
         break;
-      
+
       case 'order.paid':
         await handleRazorpayOrderPaid(event);
         break;
-      
+
       case 'refund.created':
         await handleRazorpayRefundCreated(event);
         break;
@@ -1306,9 +1311,9 @@ export const stripeWebhook = async (req: Request, res: Response) => {
       );
     } catch (err: any) {
       console.error('Stripe signature verification failed:', err.message);
-      return res.status(400).json({ 
-        success: false, 
-        message: `Webhook signature verification failed: ${err.message}` 
+      return res.status(400).json({
+        success: false,
+        message: `Webhook signature verification failed: ${err.message}`
       });
     }
 
@@ -1319,35 +1324,35 @@ export const stripeWebhook = async (req: Request, res: Response) => {
       case 'payment_intent.succeeded':
         await handleStripePaymentIntentSucceeded(event.data.object);
         break;
-      
+
       case 'payment_intent.payment_failed':
         await handleStripePaymentIntentFailed(event.data.object);
         break;
-      
+
       case 'charge.succeeded':
         await handleStripeChargeSucceeded(event.data.object);
         break;
-      
+
       case 'charge.refunded':
         await handleStripeChargeRefunded(event.data.object);
         break;
-      
+
       case 'invoice.paid':
         await handleStripeInvoicePaid(event.data.object);
         break;
-      
+
       case 'invoice.payment_failed':
         await handleStripeInvoicePaymentFailed(event.data.object);
         break;
-      
+
       case 'customer.subscription.created':
         await handleStripeSubscriptionCreated(event.data.object);
         break;
-      
+
       case 'customer.subscription.updated':
         await handleStripeSubscriptionUpdated(event.data.object);
         break;
-      
+
       case 'customer.subscription.deleted':
         await handleStripeSubscriptionDeleted(event.data.object);
         break;
@@ -1368,7 +1373,7 @@ export const stripeWebhook = async (req: Request, res: Response) => {
 async function handleRazorpayPaymentAuthorized(event: any) {
   const payment = event.payload.payment.entity;
   console.log('Payment authorized:', payment.id);
-  
+
   // Update transaction status to authorized (optional intermediate state)
   await updateTransactionByProviderOrderId(
     payment.order_id,
@@ -1387,10 +1392,10 @@ async function handleRazorpayPaymentAuthorized(event: any) {
 async function handleRazorpayPaymentCaptured(event: any) {
   const payment = event.payload.payment.entity;
   console.log('Payment captured:', payment.id);
-  
+
   // Find transaction by order_id
   const transaction = await findTransactionByProviderOrderId(payment.order_id);
-  
+
   if (transaction) {
     // Update transaction to completed
     await db.update(transactions)
@@ -1418,7 +1423,7 @@ async function handleRazorpayPaymentCaptured(event: any) {
 async function handleRazorpayPaymentFailed(event: any) {
   const payment = event.payload.payment.entity;
   console.log('Payment failed:', payment.id);
-  
+
   await updateTransactionByProviderOrderId(
     payment.order_id,
     {
@@ -1436,7 +1441,7 @@ async function handleRazorpayPaymentFailed(event: any) {
 async function handleRazorpayOrderPaid(event: any) {
   const order = event.payload.order.entity;
   console.log('Order paid:', order.id);
-  
+
   await updateTransactionByProviderOrderId(
     order.id,
     {
@@ -1449,7 +1454,7 @@ async function handleRazorpayOrderPaid(event: any) {
 async function handleRazorpayRefundCreated(event: any) {
   const refund = event.payload.refund.entity;
   console.log('Refund created:', refund.id);
-  
+
   await updateTransactionByProviderPaymentId(
     refund.payment_id,
     {
@@ -1467,10 +1472,10 @@ async function handleRazorpayRefundCreated(event: any) {
 
 async function handleStripePaymentIntentSucceeded(paymentIntent: any) {
   console.log('Payment intent succeeded:', paymentIntent.id);
-  
+
   // Find transaction by provider transaction ID
   const transaction = await findTransactionByProviderTransactionId(paymentIntent.id);
-  
+
   if (transaction) {
     await db.update(transactions)
       .set({
@@ -1491,7 +1496,7 @@ async function handleStripePaymentIntentSucceeded(paymentIntent: any) {
 
 async function handleStripePaymentIntentFailed(paymentIntent: any) {
   console.log('Payment intent failed:', paymentIntent.id);
-  
+
   await updateTransactionByProviderTransactionId(
     paymentIntent.id,
     {
@@ -1506,7 +1511,7 @@ async function handleStripePaymentIntentFailed(paymentIntent: any) {
 
 async function handleStripeChargeSucceeded(charge: any) {
   console.log('Charge succeeded:', charge.id);
-  
+
   await updateTransactionByProviderTransactionId(
     charge.payment_intent,
     {
@@ -1522,7 +1527,7 @@ async function handleStripeChargeSucceeded(charge: any) {
 
 async function handleStripeChargeRefunded(charge: any) {
   console.log('Charge refunded:', charge.id);
-  
+
   await updateTransactionByProviderPaymentId(
     charge.id,
     {
@@ -1568,7 +1573,7 @@ async function findTransactionByProviderOrderId(orderId: string) {
     .from(transactions)
     .where(eq(transactions.providerOrderId, orderId))
     .limit(1);
-  
+
   return result.length > 0 ? result[0] : null;
 }
 
@@ -1578,7 +1583,7 @@ async function findTransactionByProviderTransactionId(transactionId: string) {
     .from(transactions)
     .where(eq(transactions.providerTransactionId, transactionId))
     .limit(1);
-  
+
   return result.length > 0 ? result[0] : null;
 }
 
@@ -1588,7 +1593,7 @@ async function findTransactionByProviderPaymentId(paymentId: string) {
     .from(transactions)
     .where(eq(transactions.providerPaymentId, paymentId))
     .limit(1);
-  
+
   return result.length > 0 ? result[0] : null;
 }
 
@@ -1628,7 +1633,7 @@ async function createSubscriptionFromTransaction(transaction: any) {
   // Calculate subscription dates
   const startDate = new Date();
   const endDate = new Date();
-  
+
   if (transaction.billingCycle === 'annual') {
     endDate.setFullYear(endDate.getFullYear() + 1);
   } else {
