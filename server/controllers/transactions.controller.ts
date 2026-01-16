@@ -16,8 +16,10 @@ import ExcelJS from "exceljs";
 
 
 // Initialize Stripe with test or production keys
+const stripeKey = process.env.STRIPE_SECRET_KEY || process.env.TESTING_STRIPE_SECRET_KEY || "dummy_key_for_initialization";
+
 const stripe = new Stripe(
-  process.env.STRIPE_SECRET_KEY || process.env.TESTING_STRIPE_SECRET_KEY || "",
+  stripeKey,
   {
     apiVersion: "2025-10-29.clover",
   }
@@ -432,7 +434,7 @@ export const exportTransactions = async (req: Request, res: Response) => {
         provider: paymentProviders,
       })
       .from(transactions)
-      .where(ne(transactions.status, "pending")) 
+      .where(ne(transactions.status, "pending"))
       .leftJoin(users, eq(transactions.userId, users.id))
       .leftJoin(plans, eq(transactions.planId, plans.id))
       .leftJoin(
@@ -1208,7 +1210,7 @@ export const verifyRazorpayPayment = async (req: Request, res: Response) => {
 
     const provider = providerData[0];
 
-    
+
     const razorpay = new Razorpay({
       key_id: provider.config.apiKey || process.env.RAZORPAY_KEY_ID,
       key_secret: provider.config.apiSecret || process.env.RAZORPAY_KEY_SECRET,
@@ -1220,9 +1222,9 @@ export const verifyRazorpayPayment = async (req: Request, res: Response) => {
 
 
     // Fetch payment details
-const paymentDetails = await razorpay.payments.fetch(razorpay_payment_id);
+    const paymentDetails = await razorpay.payments.fetch(razorpay_payment_id);
 
-// console.log("Payment Details:", paymentDetails);
+    // console.log("Payment Details:", paymentDetails);
 
     // Generate signature
     const generated_signature = crypto
@@ -1332,27 +1334,27 @@ const paymentDetails = await razorpay.payments.fetch(razorpay_payment_id);
 
     // Create subscription with full plan details in the plan_data JSON field
     const newSubscription = await db
-  .insert(subscriptions)
-  .values({
-    userId: transaction.userId,
-    planId: transaction.planId,
-    planData: {  // Change `plan_data` to `planData`
-      name: plan.name,          // Store plan name
-      description: plan.description, // Store plan description
-      monthlyPrice: plan.monthlyPrice, // Store monthly price
-      annualPrice: plan.annualPrice,   // Store annual price
-      permissions: plan.permissions, // Store plan permissions
-      features: plan.features,   // Store plan features
-    },
-    status: "active",
-    billingCycle: transaction.billingCycle,
-    startDate,
-    endDate,
-    autoRenew: true,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  })
-  .returning();
+      .insert(subscriptions)
+      .values({
+        userId: transaction.userId,
+        planId: transaction.planId,
+        planData: {  // Change `plan_data` to `planData`
+          name: plan.name,          // Store plan name
+          description: plan.description, // Store plan description
+          monthlyPrice: plan.monthlyPrice, // Store monthly price
+          annualPrice: plan.annualPrice,   // Store annual price
+          permissions: plan.permissions, // Store plan permissions
+          features: plan.features,   // Store plan features
+        },
+        status: "active",
+        billingCycle: transaction.billingCycle,
+        startDate,
+        endDate,
+        autoRenew: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .returning();
 
 
     res.status(200).json({
