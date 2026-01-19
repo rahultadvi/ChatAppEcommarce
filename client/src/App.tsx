@@ -182,7 +182,7 @@ function ProtectedRoutes() {
   if (isLoading) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-white z-[9999]">
-        <MinimalLoader onComplete={() => {}} duration={1500} color="green" />
+        <MinimalLoader onComplete={() => { }} duration={1500} color="green" />
       </div>
     );
   }
@@ -190,14 +190,13 @@ function ProtectedRoutes() {
   // Priority 3: Not authenticated - show public routes
   if (!isAuthenticated) {
     return (
-      <>
-        <Header />
-        <Switch>
-          <Route path="/" component={Home} />
-          <Route component={Home} />
-        </Switch>
-        <Footer />
-      </>
+      <Switch>
+        <Route path="/login" component={LoginPage} />
+        <Route path="/signup" component={Signup} />
+        <Route path="/verify-email" component={VerifyEmail} />
+        {/* Redirect any other public route to login if not authenticated */}
+        <Route path="/:rest*" component={LoginPage} />
+      </Switch>
     );
   }
 
@@ -277,7 +276,7 @@ function ProtectedRoutes() {
           <Route path="/analytics/campaign/:campaignId">
             <PermissionRoute
               component={CampaignAnalytics}
-              // requiredPermission="settings:view"
+            // requiredPermission="settings:view"
             />
           </Route>
           <Route path="/account">
@@ -509,11 +508,7 @@ function Router() {
           </>
         </Route>
         <Route path="/">
-          <>
-            <Header />
-            <Home />
-            <Footer />
-          </>
+          <LoginPage />
         </Route>
         <Route component={ProtectedRoutes} />
       </Switch>

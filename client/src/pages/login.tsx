@@ -163,7 +163,7 @@ export default function LoginPage() {
               )}
             </div>
             <h1 className="text-3xl font-bold text-gray-900">
-              {"Welcome Back"}
+              {"Welcome"}
             </h1>
             <p className="mt-2 text-gray-600">
               Sign in to your WhatsApp marketing dashboard
@@ -237,15 +237,6 @@ export default function LoginPage() {
                       )}
                     </Button>
 
-                    <div className="mt-2 text-center">
-                      <button
-                        type="button"
-                        className="text-green-600 hover:text-green-700 underline"
-                        onClick={() => setStep("forgot")}
-                      >
-                        Forgot Password?
-                      </button>
-                    </div>
                   </form>
                 </Form>
               )}
@@ -277,111 +268,10 @@ export default function LoginPage() {
                 />
               )}
 
-              {step === "login" && (
-                <>
-                  <div className="mt-6 text-center">
-                    <p className="text-gray-600">
-                      Don't have an account?{" "}
-                      <Link
-                        to="/signup"
-                        className="text-green-600 hover:text-green-700 font-medium"
-                      >
-                        Sign up for free
-                      </Link>
-                    </p>
-                  </div>
-
-                  <div className="mt-6 space-y-4">
-                    {/* Admin Credentials */}
-                    <div className="p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-200">
-                      <p className="text-sm font-semibold text-purple-900 text-center mb-2">
-                        🔐 Admin Demo
-                      </p>
-                      <div className="space-y-1">
-                        <p className="text-sm text-gray-700 text-center">
-                          Username:{" "}
-                          <code className="bg-white px-2 py-1 rounded border border-purple-200 font-mono">
-                            demoadmin
-                          </code>
-                        </p>
-                        <p className="text-sm text-gray-700 text-center">
-                          Password:{" "}
-                          <code className="bg-white px-2 py-1 rounded border border-purple-200 font-mono">
-                            Admin@123
-                          </code>
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-between items-center gap-2">
-                      {/* User Credentials */}
-                      <div className="p-4 bg-gradient-to-r from-green-50 to-teal-50 rounded-lg border border-green-200">
-                        <p className="text-sm font-semibold text-green-900 text-center mb-2">
-                          👤 Demo User1
-                        </p>
-                        <div className="space-y-1">
-                          <p className="text-sm text-gray-700 text-center">
-                            Username:{" "}
-                            <code className="bg-white px-2 py-1 rounded border border-green-200 font-mono">
-                              demouser
-                            </code>
-                          </p>
-                          <p className="text-sm text-gray-700 text-center">
-                            Password:{" "}
-                            <code className="bg-white px-2 py-1 rounded border border-green-200 font-mono">
-                              Demo@12345
-                            </code>
-                          </p>
-                        </div>
-                      </div>
-                      <div className="p-4 bg-gradient-to-r from-green-50 to-teal-50 rounded-lg border border-green-200">
-                        <p className="text-sm font-semibold text-green-900 text-center mb-2">
-                          👤 Demo User2
-                        </p>
-                        <div className="space-y-1">
-                          <p className="text-sm text-gray-700 text-center">
-                            Username:{" "}
-                            <code className="bg-white px-2 py-1 rounded border border-green-200 font-mono">
-                              raman
-                            </code>
-                          </p>
-                          <p className="text-sm text-gray-700 text-center">
-                            Password:{" "}
-                            <code className="bg-white px-2 py-1 rounded border border-green-200 font-mono">
-                              Raman@123
-                            </code>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Optional: Info note */}
-                    <p className="text-xs text-gray-500 text-center italic">
-                      💡 Choose admin for full access or user for limited
-                      permissions
-                    </p>
-                  </div>
-                </>
-              )}
+              {step === "login" && null}
             </CardContent>
           </Card>
-          {/* Trust Indicators */}
-          <div className="text-center">
-            <div className="flex items-center justify-center space-x-6 text-sm text-gray-500">
-              <div className="flex items-center space-x-1">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span>Secure Login</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span>GDPR Compliant</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                <span>24/7 Support</span>
-              </div>
-            </div>
-          </div>
+          {/* Trust Indicators hidden */}
         </div>
       </div>
     </>
