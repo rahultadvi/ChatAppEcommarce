@@ -54,14 +54,14 @@ export const getFirstPanelConfig = async () => {
 export const updateFirstPanelConfig = async (data: Partial<NewPanelConfig>) => {
   // Try to get the first config
   const existingConfig = await getFirstPanelConfig();
-  
+
   if (existingConfig) {
     // Update existing config
     return updatePanelConfig(existingConfig.id, data);
   } else {
     // Create new config if none exists
     const newConfigData: NewPanelConfig = {
-      name: data.name || "Your App Name",
+      name: data.name || "International Trading LLC",
       tagline: data.tagline || "",
       description: data.description || "",
       companyName: data.companyName || "",

@@ -52,7 +52,7 @@ interface ParsedPanelConfig
     supportEmail: string;
     currency: string;
     country: string;
-  }> {}
+  }> { }
 
 // Helper function to process base64 images
 const processBase64Image = async (
@@ -116,16 +116,14 @@ export const create = async (req: Request, res: Response) => {
 
     const logoPath = logoFile
       ? logoFile.cloudUrl ||
-        `/uploads/${path.basename(path.dirname(logoFile.path))}/${
-          logoFile.filename
-        }`
+      `/uploads/${path.basename(path.dirname(logoFile.path))}/${logoFile.filename
+      }`
       : undefined;
 
     const faviconPath = faviconFile
       ? faviconFile.cloudUrl ||
-        `/uploads/${path.basename(path.dirname(faviconFile.path))}/${
-          faviconFile.filename
-        }`
+      `/uploads/${path.basename(path.dirname(faviconFile.path))}/${faviconFile.filename
+      }`
       : undefined;
 
     // ✅ Log the file type (Cloud / Local)
@@ -135,8 +133,7 @@ export const create = async (req: Request, res: Response) => {
       );
     if (faviconFile)
       console.log(
-        `🌐 Favicon: ${
-          faviconFile.cloudUrl ? "Cloud" : "Local"
+        `🌐 Favicon: ${faviconFile.cloudUrl ? "Cloud" : "Local"
         } → ${faviconPath}`
       );
 
@@ -189,28 +186,24 @@ export const update = async (req: Request, res: Response) => {
 
     const logoPath = logoFile
       ? logoFile.cloudUrl ||
-        `/uploads/${path.basename(path.dirname(logoFile.path))}/${
-          logoFile.filename
-        }`
+      `/uploads/${path.basename(path.dirname(logoFile.path))}/${logoFile.filename
+      }`
       : parsed.logo;
 
     const faviconPath = faviconFile
       ? faviconFile.cloudUrl ||
-        `/uploads/${path.basename(path.dirname(faviconFile.path))}/${
-          faviconFile.filename
-        }`
+      `/uploads/${path.basename(path.dirname(faviconFile.path))}/${faviconFile.filename
+      }`
       : parsed.favicon;
 
     if (logoFile)
       console.log(
-        `🖼️ Updating logo: ${
-          logoFile.cloudUrl ? "Cloud" : "Local"
+        `🖼️ Updating logo: ${logoFile.cloudUrl ? "Cloud" : "Local"
         } → ${logoPath}`
       );
     if (faviconFile)
       console.log(
-        `🌐 Updating favicon: ${
-          faviconFile.cloudUrl ? "Cloud" : "Local"
+        `🌐 Updating favicon: ${faviconFile.cloudUrl ? "Cloud" : "Local"
         } → ${faviconPath}`
       );
 
@@ -248,10 +241,10 @@ export const getBrandSettings = async (_req: Request, res: Response) => {
     if (!config) {
       // Return default settings if no config exists
       return res.json({
-        title: "Your App Name",
+        title: "International Trading LLC",
         tagline: "Building amazing experiences",
         logo: "",
-        logo2:"",
+        logo2: "",
         favicon: "",
         supportEmail: "",
         updatedAt: new Date().toISOString(),
@@ -260,7 +253,7 @@ export const getBrandSettings = async (_req: Request, res: Response) => {
 
     // Transform panel config to brand settings format
     const brandSettings = {
-      title: config.name || "Your App Name",
+      title: config.name || "International Trading LLC",
       tagline: config.tagline || "",
       currency: config.currency || "",
       country: config.country || "",
@@ -270,7 +263,7 @@ export const getBrandSettings = async (_req: Request, res: Response) => {
         : `/uploads/${config.logo}`,
       logo2: config.logo2?.startsWith("https")
         ? config.logo2
-        : `/uploads/${config.logo2}`,  
+        : `/uploads/${config.logo2}`,
       favicon: config.favicon?.startsWith("https")
         ? config.favicon
         : `/uploads/${config.favicon}`,
@@ -302,8 +295,7 @@ export const createBrandSettings = async (req: Request, res: Response) => {
       const isCloudFile = !!logoFile.cloudUrl;
       logoPath =
         logoFile.cloudUrl ||
-        `/uploads/${path.basename(path.dirname(logoFile.path))}/${
-          logoFile.filename
+        `/uploads/${path.basename(path.dirname(logoFile.path))}/${logoFile.filename
         }`;
       console.log(`🖼️ Logo (${isCloudFile ? "Cloud" : "Local"}): ${logoPath}`);
     } else if (parsed.logo && parsed.logo.includes("base64,")) {
@@ -329,8 +321,7 @@ export const createBrandSettings = async (req: Request, res: Response) => {
       const isCloudFile = !!faviconFile.cloudUrl;
       faviconPath =
         faviconFile.cloudUrl ||
-        `/uploads/${path.basename(path.dirname(faviconFile.path))}/${
-          faviconFile.filename
+        `/uploads/${path.basename(path.dirname(faviconFile.path))}/${faviconFile.filename
         }`;
       console.log(
         `🌐 Favicon (${isCloudFile ? "Cloud" : "Local"}): ${faviconPath}`

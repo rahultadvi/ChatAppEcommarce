@@ -374,37 +374,6 @@ const sidebarItemsCategories = [
     color: "text-pink-400",
   },
   {
-    name: "navigation.subscription_plans",
-    icon: MdOutlinePayment,
-    path: "/plans",
-    color: "text-blue-400",
-  },
-  {
-    name: "navigation.master_subscriptions",
-    icon: CheckCircle,
-    path: "/master-subscriptions",
-    badge: "",
-    color: "text-green-600",
-  },
-  {
-    name: "navigation.transactions_logs",
-    icon: AiOutlineTransaction,
-    path: "/transactions-logs",
-    color: "text-[#00a63e]",
-  },
-  {
-    name: "navigation.payment_gateway",
-    icon: RiSecurePaymentFill,
-    path: "/gateway",
-    color: "text-[#ffb900]",
-  },
-  {
-    name: "navigation.support_tickets",
-    icon: MdOutlineSupportAgent,
-    path: "/support-tickets",
-    color: "text-black-400",
-  },
-  {
     name: "navigation.team",
     icon: UsersRound,
     path: "/team",
@@ -755,8 +724,8 @@ export default function Sidebar() {
                       {/* Status Dot */}
                       <div
                         className={`w-2 h-2 rounded-full transition-all ${isAIActive
-                            ? "bg-green-500 animate-pulse"
-                            : "bg-gray-400"
+                          ? "bg-green-500 animate-pulse"
+                          : "bg-gray-400"
                           }`}
                       ></div>
 
