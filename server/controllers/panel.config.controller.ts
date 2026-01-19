@@ -13,28 +13,28 @@ import path from "path";
 import fs from "fs";
 
 export const panelConfigSchema = z.object({
-  name: z.string().min(1, "Name is required"),
+  name: z.string().optional().or(z.literal("")),
   tagline: z.string().optional(),
   description: z.string().optional(),
   companyName: z.string().optional(),
   companyWebsite: z.string().url().optional().or(z.literal("")),
   supportEmail: z.string().email().optional().or(z.literal("")),
-  defaultLanguage: z.string().length(2).default("en"),
-  supportedLanguages: z.array(z.string()).default(["en"]),
-  currency: z.string().min(1).default("INR"), // e.g. USD, INR
-  country: z.string().length(2).default("IN"), // ISO2 country code
+  defaultLanguage: z.string().optional().or(z.literal("")).default("en"),
+  supportedLanguages: z.array(z.string()).optional().default(["en"]),
+  currency: z.string().optional().or(z.literal("")).default("INR"), // e.g. USD, INR
+  country: z.string().optional().or(z.literal("")).default("IN"), // ISO2 country code
   firebase: z.record(z.any()).optional(),
 });
 
 export const brandSettingsSchema = z.object({
-  title: z.string().min(1, "Title is required"),
+  title: z.string().optional().or(z.literal("")),
   tagline: z.string().optional(),
   logo: z.string().optional(),
   logo2: z.string().optional(),
   favicon: z.string().optional(),
   supportEmail: z.string().email().optional().or(z.literal("")),
-  currency: z.string().min(1).default("INR"), // e.g. USD, INR
-  country: z.string().length(2).default("IN"), // ISO2 country code
+  currency: z.string().optional().or(z.literal("")), // e.g. USD, INR
+  country: z.string().optional().or(z.literal("")), // ISO2 country code
 });
 
 interface ParsedPanelConfig

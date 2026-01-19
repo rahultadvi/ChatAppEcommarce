@@ -71,6 +71,8 @@ export const updateFirstPanelConfig = async (data: Partial<NewPanelConfig>) => {
       supportedLanguages: data.supportedLanguages || ["en"],
       logo: data.logo,
       favicon: data.favicon,
+      country: data.country || "",
+      currency: data.currency || "",
     };
     return createPanelConfig(newConfigData);
   }
