@@ -83,8 +83,8 @@ export const requirePermission = (...permissions: string[]) => {
       return res.status(401).json({ error: "Authentication required" });
     }
 
-    // ✅ admin & user bypass all permission checks
-    if (user.role === "admin" || user.role === "user") {
+    // ✅ admin, superadmin & user bypass all permission checks
+    if (user.role === "admin" || user.role === "user" || user.role === "superadmin") {
       return next();
     }
 

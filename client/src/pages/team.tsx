@@ -106,9 +106,7 @@ export default function TeamPage() {
   const [search, setSearch] = useState("");
 
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState(
-    user?.role == "superadmin" ? "activity" : "members"
-  );
+  const [activeTab, setActiveTab] = useState("members");
 
   const { t } = useTranslation();
   // Fetch team members
@@ -165,9 +163,8 @@ export default function TeamPage() {
 
       toast({
         title: editingMember ? "Member updated" : "Member added",
-        description: `Team member has been ${
-          editingMember ? "updated" : "added"
-        } successfully.`,
+        description: `Team member has been ${editingMember ? "updated" : "added"
+          } successfully.`,
       });
 
       setShowAddDialog(false);
@@ -277,73 +274,57 @@ export default function TeamPage() {
 
   return (
     <div className="container max-w-7xl mx-auto dots-bg ">
-      {user?.role === "superadmin" ? (
-        <Header
-          title="Manage Activity Logs"
-          subtitle="View and monitor team activity logs"
-        />
-      ) : (
-        <Header
-          title={t("team.title")}
-          subtitle={t("team.subtitle")}
-          action={{
-            label: t("team.addMember"),
-            onClick: () => handleOpenDialog(),
-          }}
-        />
-      )}
+      <Header
+        title={t("team.title")}
+        subtitle={t("team.subtitle")}
+        action={{
+          label: t("team.addMember"),
+          onClick: () => handleOpenDialog(),
+        }}
+      />
 
       <div className="px-4 py-6">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList>
-            {user?.role === "superadmin" ? (
-              <TabsTrigger value="activity">
-                <Activity className="mr-2 h-4 w-4" />
-                {/* {t("team.Activity_Logs")} */} Activity logs
-              </TabsTrigger>
-            ) : (
-              <>
-                <TabsTrigger value="members">
-                  <Users className="mr-2 h-4 w-4" />
-                  {/* {t("team.members")} */} Team Members
-                </TabsTrigger>
-                <TabsTrigger value="activity">
-                  <Activity className="mr-2 h-4 w-4" />
-                  {/* {t("team.Activity_Logs")} */} Activity logs
-                </TabsTrigger>
-              </>
-            )}
+            <TabsTrigger value="members">
+              <Users className="mr-2 h-4 w-4" />
+              {/* {t("team.members")} */} Team Members
+            </TabsTrigger>
+            <TabsTrigger value="activity">
+              <Activity className="mr-2 h-4 w-4" />
+              {/* {t("team.Activity_Logs")} */} Activity logs
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="members" className="mt-4 sm:mt-6">
             <Card>
-            <CardHeader>
-  <div>
-    <CardTitle className="text-lg sm:text-xl">
-      {t("team.teamMember")}
-    </CardTitle>
-    <CardDescription className="text-sm">
-      {t("team.manage_Team")}
-    </CardDescription>
-  </div>
+              <CardHeader>
+                <div>
+                  <CardTitle className="text-lg sm:text-xl">
+                    {t("team.teamMember")}
+                  </CardTitle>
+                  <CardDescription className="text-sm">
+                    {t("team.manage_Team")}
+                  </CardDescription>
+                </div>
 
-  {/* Search + Add Member Row */}
-  <div className="mt-4 flex items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
-    <Input
-      placeholder="Search members..."
-      value={search}
-      onChange={(e) => {
-        setSearch(e.target.value);
-        setPage(1);
-      }}
-      className="w-full sm:w-72"
-    />
+                {/* Search + Add Member Row */}
+                <div className="mt-4 flex items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
+                  <Input
+                    placeholder="Search members..."
+                    value={search}
+                    onChange={(e) => {
+                      setSearch(e.target.value);
+                      setPage(1);
+                    }}
+                    className="w-full sm:w-72"
+                  />
 
-    <Button className="whitespace-nowrap" onClick={() => handleOpenDialog()}>
-      <UserPlus className="mr-2 h-4 w-4" />
-      Add Member
-    </Button>
-  </div>
-</CardHeader>
+                  <Button className="whitespace-nowrap" onClick={() => handleOpenDialog()}>
+                    <UserPlus className="mr-2 h-4 w-4" />
+                    Add Member
+                  </Button>
+                </div>
+              </CardHeader>
 
 
               <CardContent>
@@ -385,9 +366,8 @@ export default function TeamPage() {
                                         src={member.avatar || undefined}
                                       />
                                       <AvatarFallback>
-                                        {`${member.firstName || ""} ${
-                                          member.lastName || ""
-                                        }`
+                                        {`${member.firstName || ""} ${member.lastName || ""
+                                          }`
                                           .split(" ")
                                           .filter((n) => n)
                                           .map((n) => n[0])
@@ -406,19 +386,18 @@ export default function TeamPage() {
                                   </div>
                                   <div>
                                     <div className="font-medium">
-                                      {`${member.firstName || ""} ${
-                                        member.lastName || ""
-                                      }`.trim() || member.username}
+                                      {`${member.firstName || ""} ${member.lastName || ""
+                                        }`.trim() || member.username}
                                     </div>
                                     <div className="text-sm text-muted-foreground">
                                       {user?.username === "demouser"
                                         ? member.email
-                                            ?.split("@")[0]
-                                            .slice(0, -2)
-                                            .replace(/./g, "*") +
-                                          member.email?.slice(
-                                            member.email.indexOf("@") - 2
-                                          )
+                                          ?.split("@")[0]
+                                          .slice(0, -2)
+                                          .replace(/./g, "*") +
+                                        member.email?.slice(
+                                          member.email.indexOf("@") - 2
+                                        )
                                         : member.email}
                                     </div>
                                   </div>
@@ -447,8 +426,8 @@ export default function TeamPage() {
                                   <span className="text-sm">
                                     {member.lastLogin
                                       ? new Date(
-                                          member.lastLogin
-                                        ).toLocaleDateString()
+                                        member.lastLogin
+                                      ).toLocaleDateString()
                                       : "Never"}
                                   </span>
                                 </div>
@@ -525,9 +504,8 @@ export default function TeamPage() {
                                       src={member.avatar || undefined}
                                     />
                                     <AvatarFallback>
-                                      {`${member.firstName || ""} ${
-                                        member.lastName || ""
-                                      }`
+                                      {`${member.firstName || ""} ${member.lastName || ""
+                                        }`
                                         .split(" ")
                                         .filter((n) => n)
                                         .map((n) => n[0])
@@ -544,19 +522,18 @@ export default function TeamPage() {
                                 </div>
                                 <div className="flex-1 min-w-0">
                                   <h3 className="font-semibold text-gray-900 truncate">
-                                    {`${member.firstName || ""} ${
-                                      member.lastName || ""
-                                    }`.trim() || member.username}
+                                    {`${member.firstName || ""} ${member.lastName || ""
+                                      }`.trim() || member.username}
                                   </h3>
                                   <p className="text-sm text-gray-600 truncate">
                                     {user?.username === "demouser"
                                       ? member.email
-                                          ?.split("@")[0]
-                                          .slice(0, -2)
-                                          .replace(/./g, "*") +
-                                        member.email?.slice(
-                                          member.email.indexOf("@") - 2
-                                        )
+                                        ?.split("@")[0]
+                                        .slice(0, -2)
+                                        .replace(/./g, "*") +
+                                      member.email?.slice(
+                                        member.email.indexOf("@") - 2
+                                      )
                                       : member.email}
                                   </p>
                                 </div>
@@ -637,8 +614,8 @@ export default function TeamPage() {
                                 Last active:{" "}
                                 {member.lastLogin
                                   ? new Date(
-                                      member.lastLogin
-                                    ).toLocaleDateString()
+                                    member.lastLogin
+                                  ).toLocaleDateString()
                                   : "Never"}
                               </span>
                             </div>
@@ -813,7 +790,7 @@ export default function TeamPage() {
                           <span className="font-medium">
                             {user?.username === "demouser"
                               ? log.userName.slice(0, -1).replace(/./g, "*") +
-                                log.userName.slice(-1)
+                              log.userName.slice(-1)
                               : log.userName}
                           </span>
                         </div>
@@ -1302,7 +1279,7 @@ function TeamMemberDialog({
     const maskedLocal =
       localPart.length > visibleChars
         ? "*".repeat(localPart.length - visibleChars) +
-          localPart.slice(-visibleChars)
+        localPart.slice(-visibleChars)
         : "*".repeat(localPart.length);
     return `${maskedLocal}@${domain}`;
   };

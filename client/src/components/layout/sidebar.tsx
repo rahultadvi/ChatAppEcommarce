@@ -404,6 +404,12 @@ const sidebarItemsCategories = [
     path: "/support-tickets",
     color: "text-black-400",
   },
+  {
+    name: "navigation.team",
+    icon: UsersRound,
+    path: "/team",
+    color: "text-teal-600",
+  },
 ];
 
 // Category-based structure for superadmin
@@ -695,25 +701,25 @@ export default function Sidebar() {
           <nav className="flex-1 px-4 py-4 space-y-4 overflow-y-auto">
             {isSuper
               ? sidebarItemsCategories.map((item) =>
+                renderLink(
+                  t(item.name),
+                  item.icon,
+                  item.path,
+                  item.badge,
+                  item.color
+                )
+              )
+              : navItems
+                .filter(canView)
+                .map((item) =>
                   renderLink(
-                    t(item.name),
+                    t(item.labelKey),
                     item.icon,
-                    item.path,
+                    item.href,
                     item.badge,
                     item.color
                   )
-                )
-              : navItems
-                  .filter(canView)
-                  .map((item) =>
-                    renderLink(
-                      t(item.labelKey),
-                      item.icon,
-                      item.href,
-                      item.badge,
-                      item.color
-                    )
-                  )}
+                )}
           </nav>
 
           <div className="w-[180px] px-4 py-2 border-t border-gray-100 sm:hidden ">
@@ -748,11 +754,10 @@ export default function Sidebar() {
                     <div className="flex items-center space-x-3">
                       {/* Status Dot */}
                       <div
-                        className={`w-2 h-2 rounded-full transition-all ${
-                          isAIActive
+                        className={`w-2 h-2 rounded-full transition-all ${isAIActive
                             ? "bg-green-500 animate-pulse"
                             : "bg-gray-400"
-                        }`}
+                          }`}
                       ></div>
 
                       {/* Status Text */}
@@ -765,13 +770,12 @@ export default function Sidebar() {
                         onClick={handleToggleAI}
                         // disabled={!aiSettings}
                         className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors 
-      ${
-        !aiSettings
-          ? "bg-gray-300 cursor-not-allowed"
-          : isAIActive
-          ? "bg-green-600"
-          : "bg-gray-200"
-      }
+      ${!aiSettings
+                            ? "bg-gray-300 cursor-not-allowed"
+                            : isAIActive
+                              ? "bg-green-600"
+                              : "bg-gray-200"
+                          }
     `}
                       >
                         <span
@@ -796,8 +800,8 @@ export default function Sidebar() {
                     <span className="text-sm font-medium text-white">
                       {user
                         ? (
-                            user.firstName?.[0] || user.username[0]
-                          ).toUpperCase()
+                          user.firstName?.[0] || user.username[0]
+                        ).toUpperCase()
                         : "U"}
                     </span>
                   </div>
