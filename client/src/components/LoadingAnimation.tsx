@@ -53,15 +53,13 @@ const LoadingAnimation: React.FC<LoadingAnimationProps> = ({
   if (size === "sm") {
     return (
       <div
-        className={`animate-spin rounded-full border-2 border-t-transparent ${
-          size === "sm" ? "w-4 h-4" : "w-6 h-6"
-        } ${
-          color === "white"
+        className={`animate-spin rounded-full border-2 border-t-transparent ${size === "sm" ? "w-4 h-4" : "w-6 h-6"
+          } ${color === "white"
             ? "border-white"
             : color === "blue"
-            ? "border-blue-600"
-            : "border-green-600"
-        }`}
+              ? "border-blue-600"
+              : "border-green-600"
+          }`}
       ></div>
     );
   }
@@ -70,13 +68,12 @@ const LoadingAnimation: React.FC<LoadingAnimationProps> = ({
   if (size === "md") {
     return (
       <div
-        className={`animate-spin rounded-full border-2 border-t-transparent w-6 h-6 ${
-          color === "white"
+        className={`animate-spin rounded-full border-2 border-t-transparent w-6 h-6 ${color === "white"
             ? "border-white"
             : color === "blue"
-            ? "border-blue-600"
-            : "border-green-600"
-        }`}
+              ? "border-blue-600"
+              : "border-green-600"
+          }`}
       ></div>
     );
   }
@@ -100,8 +97,7 @@ const LoadingAnimation: React.FC<LoadingAnimationProps> = ({
           <div className="bg-gradient-to-r from-green-400 to-emerald-500 p-4 rounded-2xl shadow-2xl animate-bounce">
             <MessageCircle className="w-10 h-10 text-white" strokeWidth={1.5} />
           </div>
-          <span className="text-4xl font-black bg-gradient-to-r from-green-600 via-emerald-600 to-blue-600 bg-clip-text text-transparent drop-shadow-lg">
-            Whatsway
+            Trendlyne
           </span>
         </div>
 
@@ -224,7 +220,7 @@ const LoadingAnimation: React.FC<LoadingAnimationProps> = ({
           perspective: 1000px;
         }
       `}</style>
-    </div>
+    </div >
   );
 };
 
