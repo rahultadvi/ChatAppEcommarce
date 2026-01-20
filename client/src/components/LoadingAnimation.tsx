@@ -69,10 +69,10 @@ const LoadingAnimation: React.FC<LoadingAnimationProps> = ({
     return (
       <div
         className={`animate-spin rounded-full border-2 border-t-transparent w-6 h-6 ${color === "white"
-            ? "border-white"
-            : color === "blue"
-              ? "border-blue-600"
-              : "border-green-600"
+          ? "border-white"
+          : color === "blue"
+            ? "border-blue-600"
+            : "border-green-600"
           }`}
       ></div>
     );
@@ -97,6 +97,7 @@ const LoadingAnimation: React.FC<LoadingAnimationProps> = ({
           <div className="bg-gradient-to-r from-green-400 to-emerald-500 p-4 rounded-2xl shadow-2xl animate-bounce">
             <MessageCircle className="w-10 h-10 text-white" strokeWidth={1.5} />
           </div>
+          <span className="text-4xl font-black bg-gradient-to-r from-green-600 via-emerald-600 to-blue-600 bg-clip-text text-transparent drop-shadow-lg">
             Trendlyne
           </span>
         </div>
@@ -106,13 +107,12 @@ const LoadingAnimation: React.FC<LoadingAnimationProps> = ({
           {[...Array(3)].map((_, i) => (
             <div
               key={i}
-              className={`absolute bg-white p-4 rounded-3xl shadow-xl border border-gray-200 backdrop-blur-md ${
-                i === 0
+              className={`absolute bg-white p-4 rounded-3xl shadow-xl border border-gray-200 backdrop-blur-md ${i === 0
                   ? "left-0 top-0 animation-delay-0"
                   : i === 1
-                  ? "right-0 top-6 animation-delay-1000"
-                  : "left-1/2 transform -translate-x-1/2 top-12 animation-delay-2000"
-              }`}
+                    ? "right-0 top-6 animation-delay-1000"
+                    : "left-1/2 transform -translate-x-1/2 top-12 animation-delay-2000"
+                }`}
               style={{
                 animation: `float 3s ease-in-out infinite`,
                 animationDelay: `${i * 1}s`,
@@ -124,8 +124,8 @@ const LoadingAnimation: React.FC<LoadingAnimationProps> = ({
                   {i === 0
                     ? "Campaign sent! ✓"
                     : i === 1
-                    ? "Message delivered ✓"
-                    : "Customer engaged ✓"}
+                      ? "Message delivered ✓"
+                      : "Customer engaged ✓"}
                 </span>
               </div>
             </div>
