@@ -270,7 +270,6 @@ function getNavItems(role: string): NavItem[] {
         labelKey: "navigation.messageLogs",
         color: "text-yellow-600",
         alwaysVisible: true,
-        requiredPrefix: "messagelogs.",
         allowedRoles: ["team"],
       },
       {
@@ -372,6 +371,12 @@ const sidebarItemsCategories = [
     icon: Bell,
     path: "/notifications",
     color: "text-pink-400",
+  },
+  {
+    name: "navigation.messageLogs",
+    icon: ScrollText,
+    path: "/message-logs",
+    color: "text-yellow-600",
   },
   {
     name: "navigation.team",
