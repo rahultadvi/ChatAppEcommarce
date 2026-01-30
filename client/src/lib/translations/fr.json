@@ -1004,7 +1004,7 @@
     "header": {
       "getstart": "Commencer Gratuitement",
       "redystart": "Prêt à commencer ?",
-      "join": "Rejoignez des milliers d'entreprises qui se développent déjà avec Whatsway",
+      "join": "Rejoignez des milliers d'entreprises qui se développent déjà avec Trendlyne",
       "start": "Démarrer l'Essai Gratuit",
       "Learn": "En Savoir Plus",
       "dash": "Tableau de Bord",
@@ -1578,8 +1578,8 @@
       },
       "brandSection": {
         "brandNames": [
-          "WPSaaS",
-          "Whatsway"
+          "Trendlyne",
+          "Trendlyne"
         ],
         "description": "La plateforme de marketing WhatsApp la plus puissante. Développez votre entreprise avec des campagnes automatisées, des analyses avancées et une intégration API transparente."
       },
@@ -1625,7 +1625,7 @@
         ]
       },
       "bottomBar": {
-        "copyrightText": "© 2025 Whatsway. Tous droits réservés.",
+        "copyrightText": "© 2025 Trendlyne. Tous droits réservés.",
         "termsLink": "Conditions d'utilisation",
         "privacyLink": "Politique de confidentialité",
         "cookieLink": "Politique de cookies"
@@ -2164,7 +2164,7 @@
   },
   "aboutUs": {
     "hero": {
-      "badge": "À propos de Whatsway",
+      "badge": "À propos de Trendlyne",
       "title": "Révolutionner le marketing",
       "titleHighlight": "WhatsApp pour les entreprises",
       "subtitle": "Nous aidons les entreprises du monde entier grâce à une automatisation du marketing WhatsApp puissante et évolutive qui génère de vrais résultats"
@@ -2174,7 +2174,7 @@
       "title": "Rendre le marketing WhatsApp",
       "titleHighlight": "accessible à tous",
       "description1": "Nous pensons que chaque entreprise, quelle que soit sa taille, mérite d'accéder à des outils marketing puissants. Notre mission est de démocratiser le marketing WhatsApp en offrant une plateforme intuitive, abordable et dotée de fonctionnalités de niveau entreprise.",
-      "description2": "Avec Whatsway, les entreprises peuvent se connecter à leurs clients sur la plateforme de messagerie la plus populaire au monde, en stimulant l'engagement, les ventes et la fidélité comme jamais auparavant.",
+      "description2": "Avec Trendlyne, les entreprises peuvent se connecter à leurs clients sur la plateforme de messagerie la plus populaire au monde, en stimulant l'engagement, les ventes et la fidélité comme jamais auparavant.",
       "stats": {
         "businesses": "10K+",
         "businessesLabel": "Entreprises actives",
@@ -2183,7 +2183,7 @@
       },
       "card": {
         "title": "Plébiscité par les leaders du secteur",
-        "description": "Rejoignez des milliers d'entreprises qui se développent déjà avec Whatsway",
+        "description": "Rejoignez des milliers d'entreprises qui se développent déjà avec Trendlyne",
         "count": "+10 000 entreprises"
       }
     },
@@ -2191,8 +2191,8 @@
       "badge": "Notre histoire",
       "title": "Créé par des marketeurs,",
       "titleHighlight": "pour des marketeurs",
-      "description1": "Whatsway est né d'une simple frustration : les outils de marketing WhatsApp existants étaient trop chers, trop complexes ou manquaient de fonctionnalités essentielles. En tant que marketeurs, nous savions qu'il devait exister une meilleure solution.",
-      "description2": "Nous avons commencé à construire Whatsway en 2023 avec une vision claire : créer la plateforme de marketing WhatsApp la plus puissante, la plus facile à utiliser et la plus abordable du marché. Aujourd'hui, nous sommes fiers de servir plus de 10 000 entreprises dans le monde.",
+      "description1": "Trendlyne est né d'une simple frustration : les outils de marketing WhatsApp existants étaient trop chers, trop complexes ou manquaient de fonctionnalités essentielles. En tant que marketeurs, nous savions qu'il devait exister une meilleure solution.",
+      "description2": "Nous avons commencé à construire Trendlyne en 2023 avec une vision claire : créer la plateforme de marketing WhatsApp la plus puissante, la plus facile à utiliser et la plus abordable du marché. Aujourd'hui, nous sommes fiers de servir plus de 10 000 entreprises dans le monde.",
       "description3": "Notre équipe combine une expertise en automatisation marketing, développement logiciel et succès client afin d'innover en continu et d'apporter de la valeur à nos utilisateurs.",
       "globalPresence": "Présence mondiale",
       "globalPresenceDesc": "Nous accompagnons des entreprises dans plus de 50 pays",
@@ -2254,7 +2254,7 @@
     "cta": {
       "title": "Prêt à transformer votre",
       "titleHighlight": "marketing WhatsApp ?",
-      "subtitle": "Rejoignez des milliers d'entreprises qui se développent déjà avec Whatsway",
+      "subtitle": "Rejoignez des milliers d'entreprises qui se développent déjà avec Trendlyne",
       "button": "Commencer l'essai gratuit"
     }
   },
@@ -2262,7 +2262,7 @@
     "hero": {
       "title": "Entrer en",
       "titleHighlight": "contact",
-      "subtitle": "Des questions sur WPSaaS ? Nous sommes là pour vous aider à réussir votre marketing WhatsApp."
+      "subtitle": "Des questions sur Trendlyne ? Nous sommes là pour vous aider à réussir votre marketing WhatsApp."
     },
     "form": {
       "heading": "Envoyez-nous un message",
@@ -2304,10 +2304,10 @@
     },
     "faq": {
       "heading": "Questions fréquemment posées",
-      "subtitle": "Réponses rapides aux questions courantes sur WPSaaS",
+      "subtitle": "Réponses rapides aux questions courantes sur Trendlyne",
       "questions": [
         {
-          "q": "En combien de temps puis-je commencer avec WPSaaS ?",
+          "q": "En combien de temps puis-je commencer avec Trendlyne ?",
           "a": "Vous serez opérationnel en moins de 5 minutes. Inscrivez-vous, connectez votre API WhatsApp Business Meta et commencez à envoyer des campagnes."
         },
         {
@@ -2393,7 +2393,7 @@
       }
     },
     "benefits": {
-      "heading": "Pourquoi travailler chez WPSaaS ?",
+      "heading": "Pourquoi travailler chez Trendlyne ?",
       "subtitle": "Nous offrons des avantages compétitifs et un excellent environnement",
       "list": [
         {
@@ -2454,7 +2454,7 @@
     "hero": {
       "title": "Histoires de",
       "titleHighlight": "succès",
-      "subtitle": "Découvrez comment les entreprises de tous secteurs obtiennent des résultats remarquables grâce à la plateforme WhatsApp de WPSaaS."
+      "subtitle": "Découvrez comment les entreprises de tous secteurs obtiennent des résultats remarquables grâce à la plateforme WhatsApp de Trendlyne."
     },
     "cta": {
       "buttonText": "Lire l’étude de cas complète",
@@ -2492,7 +2492,7 @@
     },
     "ctaBanner": {
       "heading": "Prêt à écrire votre histoire de succès ?",
-      "subtitle": "Rejoignez des milliers d’entreprises qui se développent déjà avec Whatsway",
+      "subtitle": "Rejoignez des milliers d’entreprises qui se développent déjà avec Trendlyne",
       "button": "Démarrer l’essai gratuit"
     }
   },
@@ -2542,8 +2542,8 @@
             "text": "L'API WhatsApp Business est une plateforme puissante qui permet aux entreprises de communiquer avec les clients à grande échelle. Contrairement à l'application WhatsApp Business classique, l'API permet la messagerie automatisée, les intégrations et les fonctionnalités avancées."
           },
           {
-            "title": "Pourquoi choisir WPSaaS ?",
-            "text": "WPSaaS fournit une interface conviviale pour l'API WhatsApp Business, vous permettant de créer des campagnes, d'automatiser les réponses et de suivre les performances sans complexité technique."
+            "title": "Pourquoi choisir Trendlyne ?",
+            "text": "Trendlyne fournit une interface conviviale pour l'API WhatsApp Business, vous permettant de créer des campagnes, d'automatiser les réponses et de suivre les performances sans complexité technique."
           },
           {
             "title": "Prérequis",
@@ -2559,8 +2559,8 @@
             "text": "Visitez la plateforme Meta Business et créez un compte API WhatsApp Business. Vous recevrez des identifiants API incluant votre ID de numéro de téléphone, jeton d'accès et URL webhook."
           },
           {
-            "title": "Étape 2 : Se connecter à WPSaaS",
-            "text": "Dans votre tableau de bord WPSaaS, accédez à Paramètres > Configuration API. Entrez vos identifiants Meta API et testez la connexion pour vous assurer que tout fonctionne correctement."
+            "title": "Étape 2 : Se connecter à Trendlyne",
+            "text": "Dans votre tableau de bord Trendlyne, accédez à Paramètres > Configuration API. Entrez vos identifiants Meta API et testez la connexion pour vous assurer que tout fonctionne correctement."
           },
           {
             "title": "Étape 3 : Vérifiez votre entreprise",
@@ -2573,11 +2573,11 @@
         "items": [
           {
             "title": "Types de campagnes",
-            "text": "WPSaaS prend en charge différents types de campagnes : Messages de diffusion pour les annonces, Campagnes goutte-à-goutte pour nourrir les prospects, Messages déclenchés basés sur les actions des utilisateurs, Campagnes promotionnelles pour les ventes et les offres"
+            "text": "Trendlyne prend en charge différents types de campagnes : Messages de diffusion pour les annonces, Campagnes goutte-à-goutte pour nourrir les prospects, Messages déclenchés basés sur les actions des utilisateurs, Campagnes promotionnelles pour les ventes et les offres"
           },
           {
             "title": "Modèles de messages",
-            "text": "Créez des modèles dans votre Meta Business Manager et synchronisez-les avec Whatsway. Les modèles peuvent inclure du texte, des images, des vidéos et des boutons interactifs."
+            "text": "Créez des modèles dans votre Meta Business Manager et synchronisez-les avec Trendlyne. Les modèles peuvent inclure du texte, des images, des vidéos et des boutons interactifs."
           },
           {
             "title": "Segmentation de l'audience",
@@ -2669,7 +2669,7 @@
     },
     "cta": {
       "heading": "Prêt à démarrer votre parcours marketing WhatsApp ?",
-      "subtitle": "Mettez ce guide en action avec la puissante plateforme WPSaaS",
+      "subtitle": "Mettez ce guide en action avec la puissante plateforme Trendlyne",
       "button": "Commencer l'essai gratuit"
     }
   },
@@ -2750,7 +2750,7 @@
     },
     "cta": {
       "heading": "Prêt à mettre en œuvre ces meilleures pratiques ?",
-      "subtitle": "Commencez à appliquer ces stratégies éprouvées avec Whatsway dès aujourd’hui",
+      "subtitle": "Commencez à appliquer ces stratégies éprouvées avec Trendlyne dès aujourd’hui",
       "button": "Commencer l’essai gratuit"
     },
     "practices": {
@@ -2971,7 +2971,7 @@
       "title": "Politique de confidentialité"
     },
     "intro": {
-      "text": "Chez StyleHub, nous nous engageons à protéger votre vie privée. Cette politique explique comment nous collectons, utilisons et protégeons vos informations personnelles lorsque vous visitez notre site web et effectuez des achats."
+      "text": "Chez Trendlyne, nous nous engageons à protéger votre vie privée. Cette politique explique comment nous collectons, utilisons et protégeons vos informations personnelles lorsque vous visitez notre site web et effectuez des achats."
     },
     "sections": {
       "informationWeCollect": {
@@ -3060,7 +3060,7 @@
       "lastUpdated": "Dernière mise à jour : 01 janvier 2025"
     },
     "intro": {
-      "text": "Veuillez lire attentivement ces Termes et Conditions avant d’utiliser le site web et les services de StyleHub. En accédant ou en utilisant notre plateforme, vous acceptez d’être lié par ces Termes."
+      "text": "Veuillez lire attentivement ces Termes et Conditions avant d’utiliser le site web et les services de Trendlyne. En accédant ou en utilisant notre plateforme, vous acceptez d’être lié par ces Termes."
     },
     "sections": {
       "generalConditions": {
@@ -3106,7 +3106,7 @@
       },
       "indemnification": {
         "title": "9. Indemnisation",
-        "text": "Vous acceptez d’indemniser et de dégager StyleHub, ainsi que ses employés et partenaires, de toute réclamation résultant de votre violation de ces Termes."
+        "text": "Vous acceptez d’indemniser et de dégager Trendlyne, ainsi que ses employés et partenaires, de toute réclamation résultant de votre violation de ces Termes."
       },
       "severability": {
         "title": "10. Divisibilité",
