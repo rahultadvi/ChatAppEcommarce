@@ -218,7 +218,9 @@ export const templates = pgTable("templates", {
   id: varchar("id")
     .primaryKey()
     .default(sql`gen_random_uuid()`),
-  channelId: varchar("channel_id").references(() => channels.id),
+  channelId: varchar("channel_id").references(() => channels.id, {
+    onDelete: "cascade",
+  }),
   createdBy: varchar("created_by"),
   name: text("name").notNull(),
   category: text("category").notNull(), // marketing, transactional, authentication, utility
@@ -540,7 +542,7 @@ export const subscriptions = pgTable("subscriptions", {
   planId: varchar("plan_id")
     .notNull()
     .references(() => plans.id),
-    planData: jsonb("plan_data").notNull(), 
+  planData: jsonb("plan_data").notNull(),
   status: varchar("status").notNull(), // "active", "expired", "cancelled", "pending"
   billingCycle: varchar("billing_cycle").notNull(), // "monthly" or "annual"
   startDate: timestamp("start_date").notNull(),
@@ -833,7 +835,9 @@ export const analytics = pgTable("analytics", {
   id: varchar("id")
     .primaryKey()
     .default(sql`gen_random_uuid()`),
-  channelId: varchar("channel_id"),
+  channelId: varchar("channel_id").references(() => channels.id, {
+    onDelete: "cascade",
+  }),
   date: timestamp("date").notNull(),
   messagesSent: integer("messages_sent").default(0),
   messagesDelivered: integer("messages_delivered").default(0),
@@ -912,7 +916,9 @@ export const apiLogs = pgTable("api_logs", {
   id: varchar("id")
     .primaryKey()
     .default(sql`gen_random_uuid()`),
-  channelId: varchar("channel_id").references(() => channels.id),
+  channelId: varchar("channel_id").references(() => channels.id, {
+    onDelete: "cascade",
+  }),
   requestType: varchar("request_type", { length: 50 }).notNull(), // send_message, get_template, webhook_receive
   endpoint: text("endpoint").notNull(),
   method: varchar("method", { length: 10 }).notNull(),
@@ -950,7 +956,9 @@ export const groups = pgTable("groups", {
   id: varchar("id")
     .primaryKey()
     .default(sql`gen_random_uuid()`),
-  channelId: uuid("channelId"), 
+  channelId: varchar("channel_id").references(() => channels.id, {
+    onDelete: "cascade",
+  }),
   name: varchar("name", { length: 255 }).notNull(),
   description: text("description"),
   createdBy: varchar("created_by").references(() => users.id, { onDelete: "cascade" }),
@@ -995,7 +1003,9 @@ export const aiSettings = pgTable("ai_settings", {
   id: varchar("id")
     .primaryKey()
     .default(sql`gen_random_uuid()`),
-  channelId: varchar("channel_id").references(() => channels.id),
+  channelId: varchar("channel_id").references(() => channels.id, {
+    onDelete: "cascade",
+  }),
   provider: text("provider").notNull().default("openai"),
   apiKey: text("api_key").notNull(),
   model: text("model").notNull().default("gpt-4o-mini"),
@@ -1018,7 +1028,9 @@ export const sites = pgTable("sites", {
   id: varchar("id")
     .primaryKey()
     .default(sql`gen_random_uuid()`),
-  channelId: varchar("channel_id"),
+  channelId: varchar("channel_id").references(() => channels.id, {
+    onDelete: "cascade",
+  }),
   name: text("name").notNull(),
   domain: text("domain").notNull(),
   widgetCode: text("widget_code").notNull().unique(),
@@ -1048,7 +1060,7 @@ export const smtpConfig = pgTable("smtp_config", {
   password: text("password"),
   fromName: text("from_name").notNull(),
   fromEmail: text("from_email").notNull(),
-  logo: text("logo").default("null"), 
+  logo: text("logo").default("null"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -1060,11 +1072,11 @@ export const otpVerifications = pgTable("otp_verifications", {
     .default(sql`gen_random_uuid()`), // UUID primary key
 
   userId: varchar("user_id")
-    .notNull(), 
+    .notNull(),
 
   otpCode: varchar("otp_code", { length: 6 }).notNull(), // 6-digit OTP
-  expiresAt: timestamp("expires_at").notNull(), 
-  isUsed: boolean("is_used").default(false), 
+  expiresAt: timestamp("expires_at").notNull(),
+  isUsed: boolean("is_used").default(false),
 
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),

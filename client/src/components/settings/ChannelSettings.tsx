@@ -149,16 +149,16 @@ export function ChannelSettings() {
       status === "healthy"
         ? "success"
         : status === "warning"
-        ? "warning"
-        : status === "error"
-        ? "destructive"
-        : "secondary";
+          ? "warning"
+          : status === "error"
+            ? "destructive"
+            : "secondary";
     const displayStatus =
       status === "error"
         ? t("settings.channel_setting.healthStatus.error")
         : status
-        ? t(`settings.channel_setting.healthStatus.${status}`)
-        : t("settings.channel_setting.healthStatus.unknown");
+          ? t(`settings.channel_setting.healthStatus.${status}`)
+          : t("settings.channel_setting.healthStatus.unknown");
 
     return (
       <div className="flex items-center space-x-2">
@@ -260,11 +260,11 @@ export function ChannelSettings() {
                           <span className="font-mono">
                             {user?.username === "demouser"
                               ? channel.phoneNumber
-                                  ?.slice(0, -4)
-                                  .replace(/\d/g, "*") +
-                                channel.phoneNumber?.slice(-4)
+                                ?.slice(0, -4)
+                                .replace(/\d/g, "*") +
+                              channel.phoneNumber?.slice(-4)
                               : channel.phoneNumber ||
-                                t("settings.channel_setting.notSet")}
+                              t("settings.channel_setting.notSet")}
                           </span>
                         </div>
                         <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
@@ -274,9 +274,9 @@ export function ChannelSettings() {
                           <span className="font-mono break-all">
                             {user?.username === "demouser"
                               ? channel.phoneNumberId
-                                  ?.slice(0, -4)
-                                  .replace(/\d/g, "*") +
-                                channel.phoneNumberId?.slice(-4)
+                                ?.slice(0, -4)
+                                .replace(/\d/g, "*") +
+                              channel.phoneNumberId?.slice(-4)
                               : channel.phoneNumberId}
                           </span>
                         </div>
@@ -287,11 +287,11 @@ export function ChannelSettings() {
                           <span className="font-mono break-all">
                             {user?.username === "demouser"
                               ? channel.whatsappBusinessAccountId
-                                  ?.slice(0, -4)
-                                  .replace(/\d/g, "*") +
-                                channel.whatsappBusinessAccountId?.slice(-4)
+                                ?.slice(0, -4)
+                                .replace(/\d/g, "*") +
+                              channel.whatsappBusinessAccountId?.slice(-4)
                               : channel.whatsappBusinessAccountId ||
-                                t("settings.channel_setting.notSet")}
+                              t("settings.channel_setting.notSet")}
                           </span>
                         </div>
                       </div>
@@ -344,20 +344,18 @@ export function ChannelSettings() {
                                   {/* Account Mode */}
                                   {channel.healthDetails.status && (
                                     <div
-                                      className={`p-2.5 sm:p-3 rounded-lg border ${
-                                        channel.healthDetails.status === "LIVE"
+                                      className={`p-2.5 sm:p-3 rounded-lg border ${channel.healthDetails.status === "LIVE"
                                           ? "bg-green-50 border-green-200"
                                           : "bg-yellow-50 border-yellow-200"
-                                      }`}
+                                        }`}
                                     >
                                       <div className="flex items-center space-x-2 mb-1">
                                         <Activity
-                                          className={`w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 ${
-                                            channel.healthDetails.status ===
-                                            "LIVE"
+                                          className={`w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 ${channel.healthDetails.status ===
+                                              "LIVE"
                                               ? "text-green-600"
                                               : "text-yellow-600"
-                                          }`}
+                                            }`}
                                         />
                                         <span className="text-[10px] sm:text-xs font-medium text-gray-600">
                                           {t(
@@ -366,12 +364,11 @@ export function ChannelSettings() {
                                         </span>
                                       </div>
                                       <p
-                                        className={`font-semibold text-sm sm:text-base ${
-                                          channel.healthDetails.status ===
-                                          "LIVE"
+                                        className={`font-semibold text-sm sm:text-base ${channel.healthDetails.status ===
+                                            "LIVE"
                                             ? "text-green-700"
                                             : "text-yellow-700"
-                                        }`}
+                                          }`}
                                       >
                                         {channel.healthDetails.status}
                                       </p>
@@ -381,27 +378,25 @@ export function ChannelSettings() {
                                   {/* Quality Rating */}
                                   {channel.healthDetails.quality_rating && (
                                     <div
-                                      className={`p-2.5 sm:p-3 rounded-lg border ${
-                                        channel.healthDetails.quality_rating ===
-                                        "GREEN"
+                                      className={`p-2.5 sm:p-3 rounded-lg border ${channel.healthDetails.quality_rating ===
+                                          "GREEN"
                                           ? "bg-emerald-50 border-emerald-200"
                                           : channel.healthDetails
-                                              .quality_rating === "YELLOW"
-                                          ? "bg-amber-50 border-amber-200"
-                                          : "bg-red-50 border-red-200"
-                                      }`}
+                                            .quality_rating === "YELLOW"
+                                            ? "bg-amber-50 border-amber-200"
+                                            : "bg-red-50 border-red-200"
+                                        }`}
                                     >
                                       <div className="flex items-center space-x-2 mb-1">
                                         <TrendingUp
-                                          className={`w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 ${
-                                            channel.healthDetails
+                                          className={`w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 ${channel.healthDetails
                                               .quality_rating === "GREEN"
                                               ? "text-emerald-600"
                                               : channel.healthDetails
-                                                  .quality_rating === "YELLOW"
-                                              ? "text-amber-600"
-                                              : "text-red-600"
-                                          }`}
+                                                .quality_rating === "YELLOW"
+                                                ? "text-amber-600"
+                                                : "text-red-600"
+                                            }`}
                                         />
                                         <span className="text-[10px] sm:text-xs font-medium text-gray-600">
                                           {t(
@@ -410,15 +405,14 @@ export function ChannelSettings() {
                                         </span>
                                       </div>
                                       <p
-                                        className={`font-semibold text-sm sm:text-base ${
-                                          channel.healthDetails
+                                        className={`font-semibold text-sm sm:text-base ${channel.healthDetails
                                             .quality_rating === "GREEN"
                                             ? "text-emerald-700"
                                             : channel.healthDetails
-                                                .quality_rating === "YELLOW"
-                                            ? "text-amber-700"
-                                            : "text-red-700"
-                                        }`}
+                                              .quality_rating === "YELLOW"
+                                              ? "text-amber-700"
+                                              : "text-red-700"
+                                          }`}
                                       >
                                         {channel.healthDetails.quality_rating}
                                       </p>
@@ -462,64 +456,59 @@ export function ChannelSettings() {
                                   {/* Verification */}
                                   {channel.healthDetails
                                     .verification_status && (
-                                    <div
-                                      className={`p-2.5 sm:p-3 rounded-lg border ${
-                                        channel.healthDetails
-                                          .verification_status === "VERIFIED"
-                                          ? "bg-teal-50 border-teal-200"
-                                          : "bg-gray-50 border-gray-200"
-                                      }`}
-                                    >
-                                      <div className="flex items-center space-x-2 mb-1">
-                                        <ShieldCheck
-                                          className={`w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 ${
-                                            channel.healthDetails
-                                              .verification_status ===
-                                            "VERIFIED"
-                                              ? "text-teal-600"
-                                              : "text-gray-600"
-                                          }`}
-                                        />
-                                        <span className="text-[10px] sm:text-xs font-medium text-gray-600">
-                                          {t(
-                                            "settings.channel_setting.healthDetails.verification"
-                                          )}
-                                        </span>
-                                      </div>
-                                      <p
-                                        className={`font-semibold text-sm sm:text-base ${
-                                          channel.healthDetails
+                                      <div
+                                        className={`p-2.5 sm:p-3 rounded-lg border ${channel.healthDetails
                                             .verification_status === "VERIFIED"
-                                            ? "text-teal-700"
-                                            : "text-gray-700"
-                                        }`}
+                                            ? "bg-teal-50 border-teal-200"
+                                            : "bg-gray-50 border-gray-200"
+                                          }`}
                                       >
-                                        {channel.healthDetails.verification_status.replace(
-                                          /_/g,
-                                          " "
-                                        )}
-                                      </p>
-                                    </div>
-                                  )}
+                                        <div className="flex items-center space-x-2 mb-1">
+                                          <ShieldCheck
+                                            className={`w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 ${channel.healthDetails
+                                                .verification_status ===
+                                                "VERIFIED"
+                                                ? "text-teal-600"
+                                                : "text-gray-600"
+                                              }`}
+                                          />
+                                          <span className="text-[10px] sm:text-xs font-medium text-gray-600">
+                                            {t(
+                                              "settings.channel_setting.healthDetails.verification"
+                                            )}
+                                          </span>
+                                        </div>
+                                        <p
+                                          className={`font-semibold text-sm sm:text-base ${channel.healthDetails
+                                              .verification_status === "VERIFIED"
+                                              ? "text-teal-700"
+                                              : "text-gray-700"
+                                            }`}
+                                        >
+                                          {channel.healthDetails.verification_status.replace(
+                                            /_/g,
+                                            " "
+                                          )}
+                                        </p>
+                                      </div>
+                                    )}
 
                                   {/* Name Status */}
                                   {channel.healthDetails.name_status && (
                                     <div
-                                      className={`p-2.5 sm:p-3 rounded-lg border ${
-                                        channel.healthDetails.name_status ===
-                                        "APPROVED"
+                                      className={`p-2.5 sm:p-3 rounded-lg border ${channel.healthDetails.name_status ===
+                                          "APPROVED"
                                           ? "bg-indigo-50 border-indigo-200"
                                           : "bg-orange-50 border-orange-200"
-                                      }`}
+                                        }`}
                                     >
                                       <div className="flex items-center space-x-2 mb-1">
                                         <Award
-                                          className={`w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 ${
-                                            channel.healthDetails
+                                          className={`w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 ${channel.healthDetails
                                               .name_status === "APPROVED"
                                               ? "text-indigo-600"
                                               : "text-orange-600"
-                                          }`}
+                                            }`}
                                         />
                                         <span className="text-[10px] sm:text-xs font-medium text-gray-600">
                                           {t(
@@ -528,12 +517,11 @@ export function ChannelSettings() {
                                         </span>
                                       </div>
                                       <p
-                                        className={`font-semibold text-sm sm:text-base ${
-                                          channel.healthDetails.name_status ===
-                                          "APPROVED"
+                                        className={`font-semibold text-sm sm:text-base ${channel.healthDetails.name_status ===
+                                            "APPROVED"
                                             ? "text-indigo-700"
                                             : "text-orange-700"
-                                        }`}
+                                          }`}
                                       >
                                         {channel.healthDetails.name_status}
                                       </p>
@@ -595,7 +583,7 @@ export function ChannelSettings() {
                       >
                         <Edit className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </Button>
-                      {/* <Button
+                      <Button
                         variant="outline"
                         size="sm"
                         onClick={() => handleDeleteChannel(channel.id)}
@@ -606,7 +594,7 @@ export function ChannelSettings() {
                         className="flex-1 sm:flex-none text-xs sm:text-sm"
                       >
                         <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                      </Button> */}
+                      </Button>
                     </div>
                   </div>
                 </div>
