@@ -239,6 +239,7 @@ router.get("/country-data", (req, res) => {
 // forgot password
 
 router.post("/forgot-password", async (req: Request, res: Response) => {
+    console.log("🔥 Forgot password route hit");
   try {
     const { email } = req.body;
 
@@ -291,6 +292,7 @@ router.post("/forgot-password", async (req: Request, res: Response) => {
     // Send OTP via email
     try {
       await sendOTPEmail(email, otpCode, userName);
+      
       console.log(`✉️ OTP sent to ${email}`);
     } catch (emailError) {
       console.error("⚠️ Failed to send OTP email:", emailError);

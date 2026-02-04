@@ -1,5 +1,6 @@
-import { db } from "./db";
-import { users } from "@shared/schema";
+import { db } from "./db.ts";
+// import { users } from "@shared/schema";
+import { users } from "../shared/schema.ts";
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 
@@ -154,8 +155,80 @@ async function seed() {
       'settings:edit'
     ];
 
+// const DefaultsuperAdminPermissions = [
+
+//   // Dashboard
+//   'dashboard:view',
+
+//   // Users & Team
+//   'users:view',
+//   'users:create',
+//   'users:edit',
+//   'users:delete',
+
+//   'team:view',
+//   'team:create',
+//   'team:edit',
+//   'team:delete',
+
+//   // Campaigns
+//   'campaigns:view',
+//   'campaigns:create',
+//   'campaigns:edit',
+//   'campaigns:delete',
+//   'campaigns:export',
+
+//   // Templates
+//   'templates:view',
+//   'templates:create',
+//   'templates:edit',
+//   'templates:delete',
+//   'templates:export',
+
+//   // Contacts
+//   'contacts:view',
+//   'contacts:create',
+//   'contacts:edit',
+//   'contacts:delete',
+//   'contacts:export',
+
+//   // Analytics
+//   'analytics:view',
+
+//   // Notifications
+//   'notifications:view',
+//   'notifications:send',
+
+//   // Message Logs  ✅ (Missing tha)
+//   'message_logs:view',
+//   'message_logs:export',
+
+//   // Subscription & Billing
+//   'subscription_plans:view',
+//   'subscription_plans:create',
+//   'subscription_plans:edit',
+//   'subscription_plans:delete',
+
+//   'master_subscriptions:view',
+//   'transactions_logs:view',
+//   'payment_gateway:view',
+//   'payment_gateway:edit',
+
+//   // Support Tickets
+//   'support_tickets:view',
+//   'support_tickets:create',
+//   'support_tickets:edit',
+//   'support_tickets:close',
+
+//   // Settings
+//   'settings:view',
+//   'settings:edit'
+// ];
+
 
     // Default permissions 
+  
+  
     const defaultPermissions = [
       // Contacts
       'contacts:view',
@@ -253,6 +326,8 @@ async function seed() {
       isEmailVerified: true,
       permissions: ['contacts:view', 'campaigns:view', 'templates:view', 'analytics:view', 'inbox:view'],
     });
+    
+    
 
     console.log("\n=== Default Users Created ===");
     console.log("Demo Admin:");

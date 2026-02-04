@@ -412,19 +412,34 @@ export const chatbots = pgTable("chatbots", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// export const trainingData = pgTable("training_data", {
+//   id: varchar("id")
+//     .primaryKey()
+//     .default(sql`gen_random_uuid()`),
+// chatbotId: varchar("chatbot_id").references(() => chatbots.id),
+//   type: text("type").notNull(), // 'text', 'pdf', 'website', 'qa'
+//   title: text("title"),
+//   content: text("content"),
+//   metadata: jsonb("metadata"),
+//   createdAt: timestamp("created_at").defaultNow(),
+// });
+
+// Knowledge Base Categories
 export const trainingData = pgTable("training_data", {
   id: varchar("id")
     .primaryKey()
     .default(sql`gen_random_uuid()`),
-  chatbotId: integer("chatbot_id").references(() => chatbots.id),
-  type: text("type").notNull(), // 'text', 'pdf', 'website', 'qa'
+
+  chatbotId: varchar("chatbot_id").references(() => chatbots.id),
+
+  type: text("type").notNull(),
   title: text("title"),
   content: text("content"),
   metadata: jsonb("metadata"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-// Knowledge Base Categories
+
 export const knowledgeCategories = pgTable(
   "knowledge_categories",
   {
@@ -747,13 +762,16 @@ export const automationEdges = pgTable(
       .notNull()
       .references(() => automations.id, { onDelete: "cascade" }),
 
-    sourceNodeId: varchar("source_node_id")
-      .notNull()
-      .references(() => automationNodes.nodeId, { onDelete: "cascade" }),
+    // sourceNodeId: varchar("source_node_id")
+    //   .notNull()
+    //   .references(() => automationNodes.nodeId, { onDelete: "cascade" }),
+    sourceNodeId: varchar("source_node_id").notNull(),
 
-    targetNodeId: varchar("target_node_id")
-      .notNull()
-      .references(() => automationNodes.nodeId, { onDelete: "cascade" }),
+
+    // targetNodeId: varchar("target_node_id")
+    //   .notNull()
+    //   .references(() => automationNodes.nodeId, { onDelete: "cascade" }),
+    targetNodeId: varchar("target_node_id").notNull(),
 
     animated: boolean("animated").default(false),
 

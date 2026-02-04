@@ -326,6 +326,7 @@ function getNavItems(role: string): NavItem[] {
   }
 }
 
+
 const sidebarItemsCategories = [
   {
     name: "navigation.dashboard",
@@ -343,22 +344,49 @@ const sidebarItemsCategories = [
     name: "navigation.master_campaigns",
     icon: Megaphone,
     path: "/campaigns",
-    badge: "",
     color: "text-blue-600",
   },
+  {
+  name: "navigation.master_subscriptions",
+  icon: Bell,
+  path: "/master-subscriptions",
+  color: "text-blue-400",
+},
   {
     name: "navigation.master_templates",
     icon: FileText,
     path: "/templates",
-    badge: "",
     color: "text-purple-600",
   },
   {
     name: "navigation.master_contacts",
     icon: Users,
     path: "/contacts-management",
-    badge: "",
     color: "text-yellow-600",
+  },
+  {
+    name: "navigation.subscription_plans",
+    icon: MdOutlinePayment,
+    path: "/plans",
+    color: "text-blue-400",
+  },
+  {
+    name: "navigation.payment_gateway",
+    icon: RiSecurePaymentFill,
+    path: "/gateway",
+    color: "text-blue-400",
+  },
+  // {
+  //   name: "navigation.transactions_logs",
+  //   icon: AiOutlineTransaction,
+  //   path: "/transactions",
+  //   color: "text-blue-400",
+  // },
+  {
+    name: "navigation.support_tickets",
+    icon: MdOutlineSupportAgent,
+    path: "/support-tickets",
+    color: "text-blue-400",
   },
   {
     name: "navigation.analytics",
@@ -385,8 +413,6 @@ const sidebarItemsCategories = [
     color: "text-teal-600",
   },
 ];
-
-// Category-based structure for superadmin
 
 export default function Sidebar() {
   const [location, setLocation] = useLocation();
