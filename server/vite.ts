@@ -89,11 +89,11 @@ export async function setupVite(app: Express, server: Server) {
 // }
 
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(__dirname, "..", "client", "dist");
+  const distPath = path.resolve(process.cwd(), "dist", "public");
 
   if (!fs.existsSync(distPath)) {
     throw new Error(
-      `Could not find the build directory: ${distPath}, make sure to build the client first`
+      `Could not find the build directory: ${distPath}`
     );
   }
 
@@ -103,3 +103,4 @@ export function serveStatic(app: Express) {
     res.sendFile(path.join(distPath, "index.html"));
   });
 }
+
