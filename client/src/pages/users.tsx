@@ -9,6 +9,24 @@ import { Link } from "wouter";
 import { useTranslation } from "@/lib/i18n";
 import { useAuth } from "@/contexts/auth-context";
 import {isDemoUser, maskValue } from "@/utils/maskUtils";
+import { useLocation } from "wouter";
+import {
+ 
+ 
+
+ 
+} from "@/components/ui/dialog";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle
+} from "@/components/ui/dialog";
+
+import AddUserForm from "@/pages/AddUserForm";
+
+
 
 interface UserType {
   id: string;
@@ -50,6 +68,10 @@ const User: React.FC = () => {
   });
 
   const [search, setSearch] = useState("");
+  const [, setLocation] = useLocation();
+
+  const [openAddUser, setOpenAddUser] = useState(false);
+
 
   const handleToggleStatus = async (user: UserType) => {
     try {
@@ -148,7 +170,18 @@ const User: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dots-bg">
-      <Header title={t("users.title")} subtitle={t("users.subtitle")} />
+      {/* <Header title={t("users.title")} subtitle={t("users.subtitle")} /> */}
+      <Header
+  title={t("users.title")}
+  subtitle={t("users.subtitle")}
+  action={{
+    label: "Add New User",
+    // onClick: () => setLocation("/users/add"),
+    onClick: () => setOpenAddUser(true)
+
+  }}
+/>
+
 
       <div className="p-4 md:p-6">
         {/* Search */}
@@ -166,6 +199,7 @@ const User: React.FC = () => {
             <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           </div>
 
+
           <Button className="bg-green-600 hover:bg-green-700 w-full sm:w-auto">
             {t("users.search.button")}
           </Button>
@@ -181,6 +215,7 @@ const User: React.FC = () => {
           >
             {t("users.search.clear")}
           </Button>
+          
         </form>
 
         {/* Stats */}
@@ -188,6 +223,19 @@ const User: React.FC = () => {
           {t("users.stats.showing")} {users.length} {t("users.stats.of")}{" "}
           {pagination.total} {t("users.stats.users")}
         </div>
+
+         <Dialog open={openAddUser} onOpenChange={setOpenAddUser}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Add New User</DialogTitle>
+        </DialogHeader>
+
+      <AddUserForm
+  onClose={() => setOpenAddUser(false)}
+  onSuccess={() => fetchUsers(pagination.page, search, pagination.limit)}
+/>
+      </DialogContent>
+    </Dialog>
 
         {/* TABLE FOR DESKTOP */}
         <div className="hidden md:block bg-white border rounded-lg shadow-sm overflow-x-auto">

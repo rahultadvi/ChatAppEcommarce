@@ -1,31 +1,65 @@
 import nodemailer from 'nodemailer';
 // import { getPanelConfigs } from './panel.config';
+import dotenv from "dotenv";
 import { getSMTPConfig } from 'server/controllers/smtp.controller';
 import { getFirstPanelConfig, getPanelConfigs } from './panel.config';
+import crypto from "crypto";
 
-const config = await getSMTPConfig();
+dotenv.config();
 
-let transporter:any;
+
+// let transporter:any;
 
 
 const getData =  await getFirstPanelConfig()
 
-if (config) {
-  transporter = nodemailer.createTransport({
-    host: config.host,
-    port: parseInt(config.port, 10),
-    secure: config.secure === 'true',
+async function getTransporter() {
+
+  const config = await getSMTPConfig();
+
+  return nodemailer.createTransport({
+    host: config?.host || process.env.SMTP_HOST,
+    port: Number(config?.port || process.env.SMTP_PORT),
+   secure: config?.secure ?? false,
     auth: {
-      user: config.user,
-      pass: config.password,
+      user: config?.user || process.env.SMTP_USER,
+      pass: config?.password || process.env.SMTP_PASS,
     },
   });
-} else {
-  console.warn('Using fallback SMTP settings (emails will not be sent)');
-  transporter = nodemailer.createTransport({
-    jsonTransport: true, // just for development, logs emails instead of sending
-  });
 }
+
+
+
+
+
+// if (config) {
+//   // transporter = nodemailer.createTransport({
+//   //   host: config.host,
+//   //   port: parseInt(config.port, 10),
+//   //   secure: config.secure === 'true',
+//   //   auth: {
+//   //     user: config.user,
+//   //     pass: config.password,
+//   //   },
+//   // });
+//  transporter = nodemailer.createTransport({
+//   host: config?.host || process.env.SMTP_HOST,
+//   port: Number(config?.port || process.env.SMTP_PORT),
+//   secure: Number(config?.port || process.env.SMTP_PORT) === 465,
+//   auth: {
+//     user: config?.user || process.env.SMTP_USER,
+//     pass: config?.password || process.env.SMTP_PASS,
+//   },
+// });
+
+// } 
+
+// else {
+//   console.warn('Using fallback SMTP settings (emails will not be sent)');
+//   transporter = nodemailer.createTransport({
+//     jsonTransport: true, // just for development, logs emails instead of sending
+//   });
+// }
 
 const [configs] = await getPanelConfigs();
 
@@ -259,29 +293,22 @@ function extractCompanyName(url: string) {
 }
 
 export async function sendOTPEmail(email: string, otpCode: string, name?: string) {
-//   const [configs] = await getPanelConfigs();
+  const transporter = await getTransporter();
+  const config = await getSMTPConfig();
   const companyName =  configs?.name || "Your Company";
   const fromName = config?.fromName || companyName;  
-  const fromEmail = config?.fromEmail;
+ const fromEmail =
+  config?.fromEmail ||
+  process.env.SMTP_USER;
 
-  // console.log(
-  //   process.env.SMTP_FROM_NAME , process.env.SMTP_EMAIL_FROM,
-  //   {
-  //     host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  //     port: parseInt(process.env.SMTP_PORT || '587', 10),
-  //     secure: false,
-  //     auth: {
-  //       user: process.env.SMTP_USER,
-  //       pass: process.env.SMTP_PASSWORD,
-  //     },
-  //   }
-  // )
+
+  
 
   const mailOptions = {
     from: `"${fromName}" <${fromEmail}>`,
     to: email,
     subject: `Your ${companyName} Verification Code`,
-    html: generateForgotPasswordEmailHTML(companyName, "whatsway", otpCode, name),
+   html: generateForgotPasswordEmailHTML(companyName, configs?.logoUrl, otpCode, name),
     text: generateForgotPasswordEmailText(companyName, otpCode, name),
   };
 
@@ -309,7 +336,10 @@ export async function sendContactEmail(data: {
 
   const companyName = configs?.name || "Your Company";
   const fromName = config?.fromName || companyName;
-  const fromEmail = config?.fromEmail;
+ const fromEmail =
+  config?.fromEmail ||
+  process.env.SMTP_USER;
+
 
   const html = `
   <div style="background:#f4f5f7; padding:40px; font-family:Arial, sans-serif;">
@@ -387,47 +417,52 @@ export async function sendContactEmail(data: {
 }
 
 export async function sendOTPEmailVerify(email: string, otpCode: string, name?: string) {
-//   const [configs] = await getPanelConfigs();
-  const companyName = configs?.name || "Your Company";
-  const fromName = config?.fromName || companyName;  
-  const fromEmail = config?.fromEmail;
 
-  // console.log(
-  //   process.env.SMTP_FROM_NAME , process.env.SMTP_EMAIL_FROM,
-  //   {
-  //     host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  //     port: parseInt(process.env.SMTP_PORT || '587', 10),
-  //     secure: false,
-  //     auth: {
-  //       user: process.env.SMTP_USER,
-  //       pass: process.env.SMTP_PASSWORD,
-  //     },
-  //   }
-  // )
+  const transporter = await getTransporter();
+  const config = await getSMTPConfig();
+
+  const panelConfigs = await getPanelConfigs();
+  const configs = panelConfigs?.[0];
+
+  const companyName = configs?.name || "Your Company";
+
+  const fromName = config?.fromName || companyName;
+
+  const fromEmail =
+    config?.fromEmail ||
+    process.env.SMTP_USER;
 
   const mailOptions = {
     from: `"${fromName}" <${fromEmail}>`,
     to: email,
     subject: `Your ${companyName} Verification Code`,
-    html: generateOTPEmailHTML(companyName, "whatsway", otpCode, name),
+    html: generateOTPEmailHTML(companyName, configs?.logoUrl, otpCode, name),
     text: generateOTPEmailText(companyName, otpCode, name),
   };
 
   try {
+
     const info = await transporter.sendMail(mailOptions);
-    // console.log(info)
-    console.log('✉️ [Email] OTP sent to:', email);
-    return { success: true, messageId: info.messageId };
+
+    console.log("OTP sent to:", email);
+
+    return { success: true };
+
   } catch (error) {
-    console.error('❌ [Email] Failed to send OTP:', error);
-    throw new Error('Failed to send verification email');
+
+    console.error("OTP send error:", error);
+    throw error;
+
   }
 }
 
 
 
 
+
 export async function verifyEmailConfiguration(): Promise<boolean> {
+    const transporter = await getTransporter();
+  const config = await getSMTPConfig();
   try {
     await transporter.verify();
     console.log('✅ [Email] SMTP configuration is valid');
@@ -439,75 +474,78 @@ export async function verifyEmailConfiguration(): Promise<boolean> {
 }
 
 
+export async function sendInviteEmail(
+  email: string,
+  name?: string
+) {
+
+  const transporter = await getTransporter();
+  const panelConfigs = await getPanelConfigs();
+  const configs = panelConfigs?.[0];
+
+  const companyName = configs?.name || "Your Company";
+
+  const token = crypto.randomBytes(32).toString("hex");
+
+  const inviteLink =
+    `${process.env.FRONTEND_URL}/accept-invite?token=${token}&email=${email}`;
+
+  await transporter.sendMail({
+    from: `"${companyName}" <${process.env.SMTP_USER}>`,
+    to: email,
+    subject: `Invitation to join ${companyName}`,
+
+    html: `
+      <h2>You are invited to ${companyName}</h2>
+      <p>Hello ${name || ""}</p>
+      <a href="${inviteLink}">Accept Invite</a>
+    `,
+  });
+
+  return { token };
+}
 
 
- // route.ts  file
- 
- 
- // OTP endpoints for email verification
-// app.post("/api/auth/send-otp", async (req: Request, res: Response) => {
-//   try {
-//     const { email, name } = req.body;
+export async function sendVerificationLinkEmail(
+  email: string,
+  link: string,
+  name?: string
+) {
 
-//     if (!email) {
-//       return res.status(400).json({ error: "Email is required" });
-//     }
+  const transporter = await getTransporter();
+  const panelConfigs = await getPanelConfigs();
 
-//     // Check if user already exists
-//     const existingUser = await storage.getUserByEmail(email);
-//     if (existingUser) {
-//       return res.status(400).json({ error: "Email already registered" });
-//     }
+  const configs = panelConfigs?.[0];
+  const companyName = configs?.name || "Your Company";
 
-//     // Check rate limiting: max 3 OTP requests per 5 minutes
-//     const { otpVerifications } = await import("@shared/schema");
-//     const recentOTPs = await db
-//       .select()
-//       .from(otpVerifications)
-//       .where(
-//         and(
-//           eq(otpVerifications.email, email),
-//           sql`${otpVerifications.createdAt} > NOW() - INTERVAL '5 minutes'`
-//         )
-//       );
+  const fromEmail = process.env.SMTP_USER;
 
-//     if (recentOTPs.length >= 3) {
-//       return res
-//         .status(429)
-//         .json({ error: "Too many OTP requests. Please try again in 5 minutes." });
-//     }
+  const mailOptions = {
+    from: `"${companyName}" <${fromEmail}>`,
+    to: "rahultadvi8143@gmail.com",
+    subject: `${companyName} Email Verification`,
+    html: `
+      <h2>Hello ${name || ""}</h2>
+      <p>Click below to verify your email:</p>
+      <a href="${link}">${link}</a>
+    `,
+  };
 
-//     // Generate 6-digit OTP
-//     const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
-//     const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
+  await transporter.sendMail(mailOptions);
+}
 
-//     // Store OTP in database
-//     await db.insert(otpVerifications).values({
-//       email,
-//       otpCode,
-//       expiresAt,
-//     });
 
-//     console.log(`🔐 [OTP] Generated OTP for ${email}: ${otpCode} (expires at ${expiresAt.toISOString()})`);
+// export async function sendVerificationLink(email: string, link: string) {
 
-//     // Try sending OTP email, but don't fail if email sending throws
-//     try {
-//       const { sendOTPEmail } = await import("./services/email");
-//       await sendOTPEmail(email, otpCode, name);
-//       console.log(`✉️ [OTP] Sent verification code to ${email} OTP: ${otpCode}`);
-//     } catch (emailError) {
-//       console.error("⚠️ Failed to send OTP email:", emailError);
-//     }
+//   const transporter = await getTransporter();
 
-//     // Always respond success, even if email failed
-//     res.json({
-//       success: true,
-//       message: "Verification code generated successfully",
-//     });
-//   } catch (error: any) {
-//     console.error("Send OTP error:", error);
-//     res
-//       .status(500)
-//       .json({ error: error.message || "Failed to send verification code" });
-//   }
-// });
+//   await transporter.sendMail({
+//     to: email,
+//     subject: "Verify Your Email",
+//     html: `
+//       <h2>Email Verification</h2>
+//       <p>Click below link to verify:</p>
+//       <a href="${link}">Verify Email</a>
+//     `
+//   });
+// }

@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import { Request, Response, Router } from "express";
 import { db } from "../db";
 import { users, userActivityLogs } from "@shared/schema";
@@ -7,8 +8,12 @@ import bcrypt from "bcryptjs";
 import { validateRequest } from "../middlewares/validateRequest.middleware";
 import { resolveUserPermissions } from "server/utils/role-permissions";
 import country from "../config/country.json"
-import {sendOTPEmail} from "../services/email.service"
+import {sendOTPEmail, sendVerificationLinkEmail} from "../services/email.service"
 import { otpVerifications } from "@shared/schema";
+import { emailVerifications } from "@shared/schema";
+
+
+
 
 
 const router = Router();
@@ -368,6 +373,102 @@ router.post("/reset-password", async (req, res) => {
 });
 
 
+router.get("/test-email", async (req, res) => {
+  try {
+    await transporter.sendMail({
+      from: process.env.SMTP_USER,
+      to: process.env.SMTP_USER,
+      subject: "Test Email",
+      text: "SMTP is working"
+    });
+
+    res.send("Email Sent");
+  } catch (err) {
+    console.log(err);
+    res.send("Email Failed");
+  }
+});
+
+router.post("/api/auth/send-otp", async (req: Request, res: Response) => {
+  try {
+    const { email, name } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
+    }
+
+    // Check if user already exists
+    // const existingUser = await storage.getUserByEmail(email);
+    // if (existingUser) {
+    //   return res.status(400).json({ error: "Email already registered" });
+    // }
+    const existingUser = await db
+  .select()
+  .from(users)
+  .where(eq(users.email, email));
+
+
+    // Check rate limiting: max 3 OTP requests per 5 minutes
+    const { otpVerifications } = await import("@shared/schema");
+    const recentOTPs = await db
+      .select()
+      .from(otpVerifications)
+      .where(
+        and(
+          eq(otpVerifications.email, email),
+          sql`${otpVerifications.createdAt} > NOW() - INTERVAL '5 minutes'`
+        )
+      );
+
+    if (recentOTPs.length >= 3) {
+      return res
+        .status(429)
+        .json({ error: "Too many OTP requests. Please try again in 5 minutes." });
+    }
+
+    // Generate 6-digit OTP
+    const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
+
+    // Store OTP in database
+    // await db.insert(otpVerifications).values({
+    //   email,
+    //   otpCode,
+    //   expiresAt,
+    // });
+    const user = existingUser[0];
+
+await db.insert(otpVerifications).values({
+  userId: user.id,
+  otpCode,
+  expiresAt,
+  isUsed: false
+});
+
+
+    console.log(`🔐 [OTP] Generated OTP for ${email}: ${otpCode} (expires at ${expiresAt.toISOString()})`);
+
+    // Try sending OTP email, but don't fail if email sending throws
+    try {
+      const { sendOTPEmailVerify  } = await import("./services/email");
+      await sendOTPEmailVerify(email, otpCode, name);
+      console.log(`✉️ [OTP] Sent verification code to ${email} OTP: ${otpCode}`);
+    } catch (emailError) {
+      console.error("⚠️ Failed to send OTP email:", emailError);
+    }
+
+    // Always respond success, even if email failed
+    res.json({
+      success: true,
+      message: "Verification code generated successfully",
+    });
+  } catch (error: any) {
+    console.error("Send OTP error:", error);
+    res
+      .status(500)
+      .json({ error: error.message || "Failed to send verification code" });
+  }
+});
 
 
 router.post("/verify-otp", async (req, res) => {
@@ -403,7 +504,7 @@ router.post("/verify-otp", async (req, res) => {
           eq(otpVerifications.userId, userId),
           eq(otpVerifications.otpCode, otpCode.toString()),
           eq(otpVerifications.isUsed, false),
-          // sql`${otpVerifications.expiresAt} > timezone('UTC', now())`
+          sql`${otpVerifications.expiresAt} > timezone('UTC', now())`
 
         )
       )
@@ -420,12 +521,27 @@ router.post("/verify-otp", async (req, res) => {
     }
 
     // OTP valid => mark as used
-    await db
-      .update(otpVerifications)
-      .set({ isUsed: true })
-      .where(eq(otpVerifications.id, otpRecord[0].id));
+    // await db
+    //   .update(otpVerifications)
+    //   .set({ isUsed: true })
+    //   .where(eq(otpVerifications.id, otpRecord[0].id));
 
-    res.json({ success: true, message: "OTP verified successfully" });
+//    
+await db
+  .update(otpVerifications)
+  .set({ isUsed: true })
+  .where(eq(otpVerifications.id, otpRecord[0].id));
+
+await db
+  .update(users)
+  .set({
+    isEmailVerified: false,
+    status: "active"
+  })
+  .where(eq(users.id, userId));
+
+return res.json({ success: true, message: "OTP verified successfully" });
+
   } catch (error: any) {
     console.error("OTP verification error:", error);
     res.status(500).json({ error: error.message || "Failed to verify OTP" });
@@ -433,11 +549,180 @@ router.post("/verify-otp", async (req, res) => {
 });
 
 
-setInterval(async () => {
-  await db.delete(otpVerifications).where(
-    sql`${otpVerifications.expiresAt} < timezone('UTC', now())`
-  );
-}, 60 * 1000); // हर 1 मिनट
+// setInterval(async () => {
+//   await db.delete(otpVerifications).
+//   where(
+//     sql`${otpVerifications.expiresAt} < timezone('UTC', now())`
+//   );
+// }, 60 * 1000); // हर 1 मिनट
+
+
+const OTP_CLEANUP_INTERVAL = 60 * 1000;
+
+function startOtpCleanup() {
+  setInterval(async () => {
+    try {
+      await db.delete(otpVerifications).where(
+        sql`${otpVerifications.expiresAt} < timezone('UTC', now())`
+      );
+
+      console.log("🧹 Expired OTP cleaned");
+    } catch (error) {
+      console.error("OTP cleanup error:", error);
+    }
+  }, OTP_CLEANUP_INTERVAL);
+}
+
+startOtpCleanup();
+
+router.post("/accept-invite", async (req, res) => {
+
+  try {
+
+    const { email, password } = req.body;
+
+    const existingUser = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
+
+    if (existingUser.length) {
+      return res.status(400).json({ error: "User already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const [newUser] = await db.insert(users).values({
+      email,
+      username: email,
+      password: hashedPassword,
+      role: "agent",   // ⭐ IMPORTANT
+      isEmailVerified: true,
+      status: "pending",
+      permissions: []
+    }).returning();
+
+    // ⭐ AUTO LOGIN FIXED
+    (req as any).session.user = {
+      id: newUser.id,
+      username: newUser.username,
+      email: newUser.email,
+      role: newUser.role,
+      permissions: resolveUserPermissions(newUser.role, newUser.permissions as any),
+    };
+
+    (req as any).session.save(() => {
+      res.json({
+        success: true,
+        user: newUser
+      });
+    });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Failed to accept invite" });
+  }
+
+});
+router.post("/send-verification-link", async (req, res) => {
+
+  const { email } = req.body;
+
+  const existingUser = await db
+    .select()
+    .from(users)
+    .where(eq(users.email, email));
+
+  if (!existingUser.length) {
+    return res.status(404).json({ error: "User not found" });
+  }
+
+  const user = existingUser[0];
+
+  const token = crypto.randomBytes(32).toString("hex");
+
+  const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+
+  await db.insert(emailVerifications).values({
+    userId: user.id,
+    token,
+    expiresAt,
+    isUsed: false
+  });
+
+  const verifyLink =
+    `http://localhost:5000/api/auth/verify-email?token=${token}`;
+
+  try {
+    await sendVerificationLinkEmail(
+      email,
+      verifyLink,
+      user.firstName ?? undefined
+    );
+    console.log("✅ Verification email sent");
+  } catch (err) {
+    console.error("❌ Verification email failed:", err);
+  }
+
+  res.json({ success: true });
+});
+
+
+router.get("/verify-email", async (req, res) => {
+
+  try {
+
+    const token = String(req.query.token);
+
+    if (!token) {
+      return res.send("Invalid verification link");
+    }
+
+    const record = await db
+      .select()
+      .from(emailVerifications)
+      .where(
+        and(
+          eq(emailVerifications.token, token),
+          eq(emailVerifications.isUsed, false),
+          sql`${emailVerifications.expiresAt} > now()`
+        )
+      )
+      .limit(1);
+
+    if (!record.length) {
+      return res.send("Invalid or expired link");
+    }
+
+    const userId = record[0].userId;
+
+    await db.update(users)
+      .set({
+        isEmailVerified: true,
+        status: "active"
+      })
+      .where(eq(users.id, userId));
+
+    await db.update(emailVerifications)
+      .set({ isUsed: true })
+      .where(eq(emailVerifications.id, record[0].id));
+
+    // ⭐ Better UX
+    res.send(`
+      <h2>✅ Email Verified Successfully</h2>
+      <p>You can now login to your account.</p>
+    `);
+
+  } catch (error) {
+
+    console.error("Email verification error:", error);
+
+    res.send("Something went wrong");
+
+  }
+
+});
 
 
 

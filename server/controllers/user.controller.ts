@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import { db } from "../db";
-import {users} from "@shared/schema";
+import {emailVerifications, users} from "@shared/schema";
 import { eq, or, like, sql, and, desc } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 
 import { otpVerifications } from "@shared/schema";
-import { sendOTPEmailVerify } from "../services/email.service";
+import { sendOTPEmailVerify, sendVerificationLinkEmail } from "../services/email.service";
+import crypto from "crypto";
+
 
 
 // Default permissions 
@@ -176,7 +178,37 @@ export const createUser = async (req: Request, res: Response) => {
     });
 
     // Send OTP Email
-    await sendOTPEmailVerify(email, otpCode, firstName);
+
+try {
+  await sendOTPEmailVerify(email, otpCode, firstName);
+} catch (err) {
+  console.error("OTP email failed:", err);
+}
+
+const token = crypto.randomBytes(32).toString("hex");
+
+const expiresAtLink = new Date(Date.now() + 10 * 60 * 1000);
+
+await db.insert(emailVerifications).values({
+  userId: user.id,
+  token,
+  expiresAt: expiresAtLink,
+  isUsed: false
+});
+
+const verifyLink =
+  `http://localhost:5000/api/auth/verify-email?token=${token}`;
+
+try {
+  await sendVerificationLinkEmail(
+    email,
+    verifyLink,
+    firstName ?? undefined
+  );
+} catch (err) {
+  console.error("Verification link email failed:", err);
+}
+
 
     return res.status(201).json({
       success: true,

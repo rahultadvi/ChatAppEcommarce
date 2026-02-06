@@ -157,23 +157,26 @@ export default function Header({
               )}
             </div>
           </div>
+          
 
           <div className="flex items-center space-x-2 sm:space-x-4 ">
             <div className=" w-fit  ">
               {action && (
-                <Button
-                  onClick={action.onClick}
-                  className="bg-green-600 text-white px-2 py-1 "
-                >
-                  <Plus className=" w-2 h-2 sm:w-4 sm:h-4 " />{" "}
-                  <span className="hidden lg:block  ">{action.label}</span>
-                </Button>
+               <Button
+  onClick={action.onClick}
+  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 flex items-center gap-2"
+>
+  <Plus className="w-4 h-4" />
+  <span>{action.label}</span>
+</Button>
+
               )}
             </div>
+
+
             <div className=" w-fit hidden sm:block ">
               <LanguageSelector />
             </div>
-
             {user?.role != "superadmin" && (
               <div className="relative">
                 <button
@@ -205,6 +208,7 @@ export default function Header({
                   className="w-full h-full object-cover"
                 />
               </button>
+             
 
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-50">

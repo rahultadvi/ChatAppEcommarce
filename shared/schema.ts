@@ -1100,6 +1100,23 @@ export const otpVerifications = pgTable("otp_verifications", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+
+export const emailVerifications = pgTable("email_verifications", {
+  id: varchar("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
+
+  userId: varchar("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+
+  token: text("token").notNull(),
+  expiresAt: timestamp("expires_at").notNull(),
+  isUsed: boolean("is_used").default(false),
+
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Permissions type definition
 export const PERMISSIONS = {
   // Dashboard permissions

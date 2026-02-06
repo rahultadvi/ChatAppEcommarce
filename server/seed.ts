@@ -291,9 +291,9 @@ async function seed() {
 
 
     const demoAdmin = await createUserIfNotExists({
-      username: "demoadmin",
+      username: "karan",
       password: "Admin@123",
-      email: "demoadmin@whatsway.com",
+      email: "karan@whatsway.com",
       firstName: "Demo",
       lastName: "Admin",
       role: "admin", // Changed from superadmin to admin
